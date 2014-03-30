@@ -88,6 +88,8 @@ body {
 /* Center align the text within the three columns below the carousel */
 .marketing .col-lg-4 {
   margin-bottom: 20px;
+}
+.marketing {
   text-align: center;
 }
 
