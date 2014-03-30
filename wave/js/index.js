@@ -26,6 +26,7 @@ waveApp.controller('waveCtrl', function ($scope) {
     {text:'如何计算时程反应',link:'#/index2'},
     {text:'如何计算反应谱',link:'#/index3'},
     {class:"divider"},
+    {text:'关于下载数据',class:'dropdown-header'},
     {text:'关于下载数据的格式',link:'#/index4'},
     {text:'如何下载Excel格式的地震波',link:'#/index5'},
     {text:'如何下载Excel格式的反应谱',link:'#/index6'},

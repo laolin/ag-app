@@ -41,7 +41,7 @@
               <ul class="dropdown-menu">
                 <li ng-repeat="item in navdropdowns.items"
                 class="{{ item.class }}">
-                  <a href="{{item.link}}">{{item.text}}</a>
+                  <a ng-if="item.link" href="{{item.link}}">{{item.text}}</a>{{item.link?'':item.text}}
                 </li>
               </ul>
             </li>
