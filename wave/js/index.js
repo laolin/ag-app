@@ -32,6 +32,19 @@ waveApp.controller('waveCtrl', function ($scope) {
     {text:'如何下载AutoCAD格式的地震波',link:'#/index7'},
     {text:'如何下载AutoCAD格式的反应谱',link:'#/index8'}
   ];
+  var row1=[
+    {width:4,imgSize:200,link:'#/about',img:'http://files.laolin.com/2013/structural-engineering/linjp-2012.9.3-180x180.jpg',title:'个人简历',text:'林建萍，高级工程师，国家一级注册结构工程师'},
+    {width:4,imgSize:200,link:'#/about',img:'http://files.laolin.com/2013/development/20130715-development.jpg',title:'老林编程',text:'编程是老林的业余爱好。'},
+    {width:4,imgSize:200,link:'#/about',img:'http://files.laolin.com/2013/laolin-family/20130525.laolin.family-200.jpg',title:'我爱我家',text:'欢欢喜喜龙凤胎、Anyi和老林。'}
+   ];
+  var row2=[
+    {width:3,imgSize:150,link:'#/about',img:'http://files.laolin.com/2013/structural-engineering/21030715-structural.jpg',title:'Title -2-1-1',text:'test text 1 11 测试'},
+    {width:3,imgSize:150,link:'#/about',img:'http://files.laolin.com/2013/structural-engineering/20130715-team.jpg',title:'Title -3-2-1',text:'test text 222222222222 测试'},
+    {width:3,imgSize:150,link:'#/about',img:'http://files.laolin.com/2013/laolin-family/20130525.laolin.family-200.jpg',title:'Title -3-3-1',text:'3333333333test text 1 11 测试'},
+    {width:3,imgSize:150,link:'#/about',img:'http://files.laolin.com/2013/structural-engineering/linjp-2012.9.3-180x180.jpg',title:'Ti4444444tle -2-4-1',text:'444444444test 测试text 测试 33333 测试'}
+   ];
+  
+  $scope.rows=[row1,row2];
 });
 waveApp.controller('CarouselDemoCtrl',CarouselDemoCtrl);
 function CarouselDemoCtrl($scope) {

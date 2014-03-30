@@ -81,29 +81,14 @@
 
     <div class="container marketing">
 
-      <!-- Three columns of text below the carousel -->
-      <div class="row">
-        <div class="col-lg-4">
-          <img class="img-circle" src="http://files.laolin.com/2013/structural-engineering/20130715-team.jpg" alt="Generic placeholder image">
-          <h2>结构工程师</h2>
-          <p>结构工程师结构工程师结构工程师结构工程师结构工程师结构工程师结构工程师结构工程师结构工程师结构工程师结构工程师结构工程师结构工程师结构工程师结构工程师结构工程师结构工程师结构工程师结构工程师结构工程师结构工程师结构工程师结构工程师结构工程师结构工程师结构工程师结构工程师结构工程师</p>
-          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-        </div><!-- /.col-lg-4 -->
-        <div class="col-lg-4">
-          <img class="img-circle" src="http://files.laolin.com/2013/development/20130715-development.jpg" alt="Generic placeholder image">
-          <h2>编程爱好者</h2>
-          <p>编程爱好者编程爱好者编程爱好者编程爱好者编程爱好者编程爱好者编程爱好者编程爱好者编程爱好者编程爱好者编程爱好者编程爱好者编程爱好者</p>
-          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-        </div><!-- /.col-lg-4 -->
-        <div class="col-lg-4">
-          <img class="img-circle" src="http://files.laolin.com/2013/laolin-family/20130525.laolin.family-200.jpg" alt="Generic placeholder image">
-          <h2>老林之家</h2>
-          <p>老林之家老林之家老林之家老林之家老林之家老林之家老林之家老林之家老林之家老林之家老林之家老林之家老林之家</p>
-          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-        </div><!-- /.col-lg-4 -->
+      <div class="row" ng-repeat="row in rows">
+        <div ng-class=" 'col-lg-' + item.width" ng-repeat="item in row">
+          <img class="img-circle" width="{{item.imgSize}}px" ng-src="{{item.img}}" alt="Generic placeholder image">
+          <h2>{{item.title}}</h2>
+          <p>{{item.text}}</p>
+          <p><a class="btn btn-default" href="{{item.link}}" role="button">View details &raquo;</a></p>
+        </div><!-- /.col-lg-x -->
       </div><!-- /.row -->
-
-
 
       <!-- FOOTER -->
       <footer>
