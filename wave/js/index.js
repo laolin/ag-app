@@ -2,6 +2,10 @@
 ;
 var waveApp = angular.module('waveApp', ['ui.bootstrap']);
 
+waveApp.data={};
+waveApp.data.styles=['blue','green','red','yellow',
+  'orange','pink','purple','lime','magenta','teal'];//,'white','black'
+
 
 waveApp.controller('waveCtrl', function ($scope) {
   //DEBUG标记，正式页面应设为false
@@ -29,5 +33,23 @@ waveApp.controller('waveCtrl', function ($scope) {
     {text:'如何下载AutoCAD格式的反应谱',link:'#/index8'}
   ];
 });
+waveApp.controller('CarouselDemoCtrl',CarouselDemoCtrl);
+function CarouselDemoCtrl($scope) {
+  $scope.myInterval = 5000;
+  var slides = $scope.slides = [];
+  $scope.addSlide = function() {
+    slides.push({
+      style: waveApp.data.styles[slides.length%waveApp.data.styles.length],
+      text: ['More','Extra','Lots of','Surplus'][slides.length % 4] + ' ' +
+        ['Cats', 'Kittys', 'Felines', 'Cutes',"Dog"][slides.length % 5]
+    });
+  };
+  for (var i=0; i<4; i++) {
+    $scope.addSlide();
+  }
+}
+
+
+
 console.log("ng laolin wave app init.");
 

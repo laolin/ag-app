@@ -50,100 +50,29 @@
       </div>
     </div>
 
-
-    <!-- Carousel
-    ================================================== -->
-    <div id="myCarousel" class="carousel slide" data-ride="carousel">
-      <!-- Indicators -->
-      <ol class="carousel-indicators">
-        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-        <li data-target="#myCarousel" data-slide-to="1"></li>
-        <li data-target="#myCarousel" data-slide-to="2"></li>
-        <li data-target="#myCarousel" data-slide-to="3"></li>
-        <li data-target="#myCarousel" data-slide-to="4"></li>
-        <li data-target="#myCarousel" data-slide-to="5"></li>
-        <li data-target="#myCarousel" data-slide-to="6"></li>
-        <li data-target="#myCarousel" data-slide-to="7"></li>
-        <li data-target="#myCarousel" data-slide-to="8"></li>
-        <li data-target="#myCarousel" data-slide-to="9"></li>
-        <li data-target="#myCarousel" data-slide-to="10"></li>
-      </ol>
-      <div class="carousel-inner">
-        <div class="item metbox-red active">
-          <div class="container">
-            <div class="carousel-caption">
-              <h1>Example headline.</h1>
-              <p>Note: If you're viewing this page via a <code>file://</code> URL, the "next" and "previous" Glyphicon buttons on the left and right might not load/display properly due to web browser security rules.</p>
-              <p><a class="btn btn-lg btn-primary" href="#" role="button">Sign up today</a></p>
-            </div>
-          </div>
+    
+<div ng-controller="CarouselDemoCtrl">
+  <div>
+    <carousel interval="myInterval">
+      <slide  class="metbox-{{ slide.style }}" ng-repeat="slide in slides" active="slide.active">
+        <h1 style="margin:auto">{{slide.style}}</h1>
+        <div class="carousel-caption">
+          <h4>Slide {{$index}}</h4>
+          <p>{{slide.text}}</p>
         </div>
-        <div class="item metbox-yellow">
-          <div class="container">
-            <div class="carousel-caption">
-            <h1>yellow</h1>
-            <p>地地地地地地地地地地地地地地地地地地地地地地地地地地地地地地地地地地地地地地地地地</p>
-          </div>
-          </div>
-        </div>
-        <div class="item metbox-black">
-          <div class="container carousel-caption">
-          <h1>black</h1>
-          </div>
-        </div>
-        <div class="item metbox-pink">
-          <div class="container carousel-caption">
-          <h1>pink</h1>
-          </div>
-        </div>
-        <div class="item metbox-orange">
-          <div class="container carousel-caption">
-          <h1>orange</h1>
-          </div>
-        </div>
-        <div class="item metbox-purple">
-          <div class="container carousel-caption">
-          <h1>purple</h1>
-          </div>
-        </div>
-        <div class="item metbox-lime">
-          <div class="container carousel-caption">
-          <h1>lime</h1>
-          </div>
-        </div>
-        <div class="item metbox-magenta">
-          <div class="container carousel-caption">
-          <h1>magenta</h1>
-          </div>
-        </div>
-        <div class="item metbox-teal">
-          <div class="container carousel-caption">
-            <h1>teal</h1>
-          </div>
-        </div>
-        <div class="item metbox-green">
-          <div class="container">
-            <div class="carousel-caption">
-              <h1>Another example headline.</h1>
-              <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-              <p><a class="btn btn-lg btn-primary" href="#" role="button">Learn more</a></p>
-            </div>
-          </div>
-        </div>
-        <div class="item metbox-blue">
-          <div class="container">
-            <div class="carousel-caption">
-              <h1>One more for good measure.</h1>
-              <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-              <p><a class="btn btn-lg btn-primary" href="#" role="button">Browse gallery</a></p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <a class="left carousel-control" href="#myCarousel" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
-      <a class="right carousel-control" href="#myCarousel" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
-    </div><!-- /.carousel -->
-
+      </slide>
+    </carousel>
+  </div>
+  <div class="row" ng-show="debug">
+    <div class="col-md-6">
+      <a class="btn btn-info" ng-click="addSlide()">Add Slide</a>
+    </div>
+    <div class="col-md-6">
+      Interval, in milliseconds: <input type="number" class="form-control" ng-model="myInterval">
+      <br />Enter a negative number to stop the interval.
+    </div>
+  </div>
+</div>
 
 
     <!-- Marketing messaging and featurettes
