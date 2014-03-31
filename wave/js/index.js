@@ -1,21 +1,21 @@
 //copyright 2004 LaoLin
 ;
-var waveApp = angular.module('waveApp', ['ui.bootstrap']);
+var LaolinApp = angular.module('LaolinApp', ['ui.bootstrap']);
 
 //A.1 通用数据
-waveApp.data={};
-waveApp.data.styles=['blue','green','red','yellow',
+LaolinApp.data={};
+LaolinApp.data.styles=['blue','green','red','yellow',
   'orange','pink','purple','lime','magenta','teal'];//,'white','black'
 
 
 //C.0 AppCtrl controller
-waveApp.controller('AppCtrl', function ($scope) {
+LaolinApp.controller('AppCtrl', function ($scope) {
   //DEBUG标记，正式页面应设为false
   $scope.debug=false;
 });
 
 //C.1 TopNavCtrl controller
-waveApp.controller("TopNavCtrl", function ($scope) {
+LaolinApp.controller("TopNavCtrl", function ($scope) {
 
   //页面左上角，APP名称
   $scope.appName = "LaoLin地震波助手";
@@ -43,7 +43,7 @@ waveApp.controller("TopNavCtrl", function ($scope) {
 });
 
 //C.3 MarketingCtrl controller
-waveApp.controller("MarketingCtrl", function ($scope) {
+LaolinApp.controller("MarketingCtrl", function ($scope) {
   var row1=[
     {width:4,imgSize:200,link:'#/about',img:'http://files.laolin.com/2013/structural-engineering/linjp-2012.9.3-180x180.jpg',title:'个人简历',text:'林建萍，高级工程师，国家一级注册结构工程师'},
     {width:4,imgSize:200,link:'#/about',img:'http://files.laolin.com/2013/development/20130715-development.jpg',title:'老林编程',text:'编程是老林的业余爱好。'},
@@ -60,12 +60,12 @@ waveApp.controller("MarketingCtrl", function ($scope) {
 
 
 //C.2 CarouselDemoCtrl controller
-waveApp.controller('CarouselDemoCtrl',function ($scope) {
+LaolinApp.controller('CarouselDemoCtrl',function ($scope) {
   $scope.myInterval = 5000;
   var slides = $scope.slides = [];
   $scope.addSlide = function() {
     slides.push({
-      style: waveApp.data.styles[slides.length%waveApp.data.styles.length],
+      style: LaolinApp.data.styles[slides.length%LaolinApp.data.styles.length],
       text: ['More','Extra','Lots of','Surplus'][slides.length % 4] + ' ' +
         ['Cats', 'Kittys', 'Felines', 'Cutes',"Dog"][slides.length % 5]
     });
