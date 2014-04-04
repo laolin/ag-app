@@ -12,6 +12,7 @@ LaolinApp.data.styles=['blue','green','red','yellow',
 LaolinApp.controller('AppCtrl', function ($scope) {
   //DEBUG标记，正式页面应设为false
   $scope.debug=false;
+  $scope.initok=true;
 });
 
 //C.1 TopNavCtrl controller
