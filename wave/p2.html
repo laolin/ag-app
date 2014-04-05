@@ -1,1 +1,10 @@
-p2p2p2p2p2p2p2p2pp2p2p2p2p2pp2 uuuuuuuuuuuuuuuuuuuuuuuuu
+    <div class="container marketing">
+
+      <div class="row" ng-repeat="row in rows">
+        <div ng-class=" 'col-lg-' + item.width" ng-repeat="item in row">
+          <img class="img-circle" width="{{item.imgSize}}px" ng-src="{{item.img}}" alt="Generic placeholder image">
+          <h2>{{item.title}}</h2>
+          <p>{{item.text}}</p>
+          <p><a class="btn btn-default" href="{{item.link}}" role="button">View details &raquo;</a></p>
+        </div><!-- /.col-lg-x -->
+      </div><!-- /.row -->

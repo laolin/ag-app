@@ -8,7 +8,7 @@
     <meta name="author" content="">
     <link rel="shortcut icon" href="/favicon.ico">
 
-    <title>Welcome :: by LaoLin</title>
+    <title>{{app.pageTitle}}Welcome :: by LaoLin</title>
 
     <!-- Bootstrap core CSS -->
     <link href="../lib/bs311/css/bootstrap.min.css" rel="stylesheet">
@@ -20,13 +20,6 @@
     <link href="css/index.css" rel="stylesheet">
   </head>
   <body ng-controller="AppCtrl">
-  <div id="js-loading" ng-show="!initok" class="jumbotron">  
-     <h1>Welcome!</h1>
-     <p>Loading, please wait...</p>
-     <p></p>
-  </div>
-  <div ng-view></div>
-  <div id="js-pagebody" ng-show="initok">
     <!-- NAVBAR
     ================================================== -->
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation"  ng-controller="TopNavCtrl">
@@ -57,45 +50,23 @@
       </div>
     </div>
 
-    
-<div ng-controller="CarouselDemoCtrl">
-  <div>
-    <carousel interval="myInterval">
-      <slide  class="metbox-{{ slide.style }}" ng-repeat="slide in slides" active="slide.active">
-        <h1 style="margin:auto">{{slide.style}}</h1>
-        <div class="carousel-caption">
-          <h4>Slide {{$index}}</h4>
-          <p>{{slide.text}}</p>
-        </div>
-      </slide>
-    </carousel>
-  </div>
-  <div class="row" ng-show="debug">
-    <div class="col-md-6">
-      <a class="btn btn-info" ng-click="addSlide()">Add Slide</a>
-    </div>
-    <div class="col-md-6">
-      Interval, in milliseconds: <input type="number" class="form-control" ng-model="myInterval">
-      <br />Enter a negative number to stop the interval.
-    </div>
-  </div>
-</div>
+   
 
 
-    <!-- Marketing messaging and featurettes
-    ================================================== -->
-    <!-- Wrap the rest of the page in another container to center all the content. -->
 
-    <div class="container marketing" ng-controller="MarketingCtrl">
-
-      <div class="row" ng-repeat="row in rows">
-        <div ng-class=" 'col-lg-' + item.width" ng-repeat="item in row">
-          <img class="img-circle" width="{{item.imgSize}}px" ng-src="{{item.img}}" alt="Generic placeholder image">
-          <h2>{{item.title}}</h2>
-          <p>{{item.text}}</p>
-          <p><a class="btn btn-default" href="{{item.link}}" role="button">View details &raquo;</a></p>
-        </div><!-- /.col-lg-x -->
-      </div><!-- /.row -->
+    <div class="container">
+      <div id="js-loading"class="jumbotron">  
+        <h1>Welcome!</h1>
+          <p ng-show="!initok"><button type="button" class="btn btn-primary" ng-click="initok=true">Start</button></p>
+          <p ng-show="initok" >
+            <a class='btn btn-success' href="#/">return</a>
+            <a class='btn btn-info' href="#/p1">start p1</a>
+            <a class='btn btn-info' href="#/p2">start p2</a>
+          </p>
+      </div>
+    </div><!-- /.container -->
+    <div ng-view></div>
+    <div class="container">
 
       <!-- FOOTER -->
       <footer>
@@ -104,7 +75,6 @@
       </footer>
 
     </div><!-- /.container -->
-  </div>
 
 
     <!-- Bootstrap core JavaScript

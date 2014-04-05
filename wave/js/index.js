@@ -11,7 +11,13 @@ LaolinApp.config(function ($routeProvider) {
         $routeProvider
             .when('/',
                 {
-                    controller: 'MarketingCtrl',
+                    controller: 'AppCtrl',
+                    templateUrl: 'p0.html'
+                })
+            //Define a route that has a route parameter in it (:customerID)
+            .when('/p1',
+                {
+                    controller: 'CarouselDemoCtrl',
                     templateUrl: 'p1.html'
                 })
             //Define a route that has a route parameter in it (:customerID)
@@ -27,7 +33,8 @@ LaolinApp.config(function ($routeProvider) {
 LaolinApp.controller('AppCtrl', function ($scope) {
   //DEBUG标记，正式页面应设为false
   $scope.debug=false;
-  $scope.initok=true;
+  $scope.app={pageTitle:"地震波助手"};
+  //$scope.initok=true;
 });
 
 //C.1 TopNavCtrl controller
