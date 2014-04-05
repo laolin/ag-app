@@ -8,46 +8,28 @@ LaolinApp.data.styles=['blue','green','red','yellow',
   'orange','pink','purple','lime','magenta','teal'];//,'white','black'
 
 LaolinApp.config(function ($routeProvider) {
-        $routeProvider
-            .when('/index',
-                {
-                    controller: 'AppCtrl',
-                    templateUrl: 'p0.html'
-                })
-            //Define a route that has a route parameter in it (:customerID)
-            .when('/p1',
-                {
-                    controller: 'CarouselDemoCtrl',
-                    templateUrl: 'p1.html'
-                })
-            //Define a route that has a route parameter in it (:customerID)
-            .when('/p2',
-                {
-                    controller: 'MarketingCtrl',
-                    templateUrl: 'p2.html'
-                })
-            .otherwise({ redirectTo: '/index' });
-    });
-
-LaolinApp.service('waveService', function () {
-  var waveNameList=["wave1","wave2","Elcetro","SHW01x"];
-  var waveData={"wave1":[1,2,1,3,4,5],"wave2":[21,22,21,23,24,25],
-      "Elcetro":[31,32,31,33,34,35],"SHW01x":[41,442,4441,43,4444,4445],};
-  var currentWaveId=-1;
-  
-  this.getWaveList = function () {
-    return waveNameList;
-  };
-  this.getWaveData = function (id) {
-    currentWaveId=id;
-    return waveData[waveNameList[id]];
-  };
-  this.getCurrentWaveId = function() {
-    return currentWaveId;
-  };
-  this.getCurrentWaveName = function() {
-    return currentWaveId>=0?waveNameList[currentWaveId]:"";
-  };
+  $routeProvider
+    .when('/index',
+      {
+        controller: 'AppCtrl',
+        templateUrl: 'p0.html'
+      })
+    .when('/waveAna',
+      {
+        controller: 'waveAnaCtrl',
+        templateUrl: 'wave-list.html'
+      })
+    .when('/p1',
+      {
+        controller: 'CarouselDemoCtrl',
+        templateUrl: 'p1.html'
+      })
+    .when('/p2',
+      {
+        controller: 'MarketingCtrl',
+        templateUrl: 'p2.html'
+      })
+    .otherwise({ redirectTo: '/index' });
 });
 
     
@@ -67,7 +49,7 @@ LaolinApp.controller("TopNavCtrl", function ($scope,$location) {
   //导航菜单项目
   $scope.navs=[
     {text:'首页',link:'#/index'},
-    {text:'Page1',link:'#/p1'},
+    {text:'地震波列表',link:'#/waveAna'},
     {text:'Page2',link:'#/p2'}
   ];
   
