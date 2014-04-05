@@ -30,17 +30,24 @@ LaolinApp.config(function ($routeProvider) {
     });
 
 LaolinApp.service('waveService', function () {
-  var waveList=["wave1","wave2","Elcetro","SHW01x"];
+  var waveNameList=["wave1","wave2","Elcetro","SHW01x"];
   var waveData={"wave1":[1,2,1,3,4,5],"wave2":[21,22,21,23,24,25],
       "Elcetro":[31,32,31,33,34,35],"SHW01x":[41,442,4441,43,4444,4445],};
+  var currentWaveId=-1;
   
   this.getWaveList = function () {
-      return waveList;
+    return waveNameList;
   };
   this.getWaveData = function (id) {
-      return waveData[waveList[id]];
+    currentWaveId=id;
+    return waveData[waveNameList[id]];
   };
-
+  this.getCurrentWaveId = function() {
+    return currentWaveId;
+  };
+  this.getCurrentWaveName = function() {
+    return currentWaveId>=0?waveNameList[currentWaveId]:"";
+  };
 });
 
     
@@ -104,10 +111,11 @@ LaolinApp.controller("MarketingCtrl", function ($scope,$rootScope,waveService) {
   $scope.rows=[row1,row2];
   $scope.waves=waveService.getWaveList();
   $scope.getWaveData=function(id){
-    $scope.waveId=id;
     $scope.waveData=waveService.getWaveData(id)
-    console.log(id);
+    $scope.waveId=waveService.getCurrentWaveId();
   }
+  $scope.waveId=waveService.getCurrentWaveId();
+  $scope.waveData=waveService.getWaveData($scope.waveId)
   $rootScope.app.pageTitle="P2";
 });
 
