@@ -30,10 +30,10 @@ LaolinApp.config(function ($routeProvider) {
     });
     
 //C.0 AppCtrl controller
-LaolinApp.controller('AppCtrl', function ($scope) {
+LaolinApp.controller('AppCtrl', function ($scope, $rootScope) {
   //DEBUG标记，正式页面应设为false
   $scope.debug=false;
-  $scope.app={pageTitle:"地震波助手"};
+  $rootScope.app={pageTitle:"地震波助手"};
   //$scope.initok=true;
 });
 
