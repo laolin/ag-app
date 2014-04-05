@@ -28,6 +28,21 @@ LaolinApp.config(function ($routeProvider) {
                 })
             .otherwise({ redirectTo: '/' });
     });
+
+LaolinApp.service('waveService', function () {
+  var waveList=["wave1","wave2","Elcetro","SHW01x"];
+  var waveData={"wave1":[1,2,1,3,4,5],"wave2":[21,22,21,23,24,25],
+      "Elcetro":[31,32,31,33,34,35],"SHW01x":[41,442,4441,43,4444,4445],};
+  
+  this.getWaveList = function () {
+      return waveList;
+  };
+  this.getWaveData = function (id) {
+      return waveData[waveList[id]];
+  };
+
+});
+
     
 //C.0 AppCtrl controller
 LaolinApp.controller('AppCtrl', function ($scope, $rootScope) {
@@ -44,9 +59,9 @@ LaolinApp.controller("TopNavCtrl", function ($scope) {
   $scope.appName = "LaoLin地震波助手";
   //导航菜单项目
   $scope.navs=[
-    {text:'首页',link:'#/index',active:false},
-    {text:'主2',link:'#/m3',active:true},
-    {text:'测试',link:'#/test2',active:false}
+    {text:'首页',link:'#/',active:false},
+    {text:'Page1',link:'#/p1',active:true},
+    {text:'Page2',link:'#/p2',active:false}
   ];
   
   //导航菜单最右侧可下拉的项目（可选）
@@ -66,7 +81,7 @@ LaolinApp.controller("TopNavCtrl", function ($scope) {
 });
 
 //C.3 MarketingCtrl controller
-LaolinApp.controller("MarketingCtrl", function ($scope,$rootScope) {
+LaolinApp.controller("MarketingCtrl", function ($scope,$rootScope,waveService) {
   var row1=[
     {width:4,imgSize:200,link:'#/about',img:'http://files.laolin.com/2013/structural-engineering/linjp-2012.9.3-180x180.jpg',title:'个人简历',text:'林建萍，高级工程师，国家一级注册结构工程师'},
     {width:4,imgSize:200,link:'#/about',img:'http://files.laolin.com/2013/development/20130715-development.jpg',title:'老林编程',text:'编程是老林的业余爱好。'},
@@ -79,6 +94,12 @@ LaolinApp.controller("MarketingCtrl", function ($scope,$rootScope) {
     {width:3,imgSize:150,link:'#/about',img:'http://files.laolin.com/2013/structural-engineering/linjp-2012.9.3-180x180.jpg',title:'Ti4444444tle -2-4-1',text:'444444444test 测试text 测试 33333 测试'}
    ];
   $scope.rows=[row1,row2];
+  $scope.waves=waveService.getWaveList();
+  $scope.getWaveData=function(id){
+    $scope.waveId=id;
+    $scope.waveData=waveService.getWaveData(id)
+    console.log(id);
+  }
   $rootScope.app.pageTitle="P2";
 });
 

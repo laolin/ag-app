@@ -54,17 +54,6 @@
 
 
 
-    <div class="container">
-      <div id="js-loading"class="jumbotron">  
-        <h1>Welcome!</h1>
-          <p ng-show="!initok"><button type="button" class="btn btn-primary" ng-click="initok=true">Show Pages</button></p>
-          <p ng-show="initok" >
-            <a class='btn btn-success' href="#/">root page</a>
-            <a class='btn btn-info' href="#/p1">start p1</a>
-            <a class='btn btn-info' href="#/p2">start p2</a>
-          </p>
-      </div>
-    </div><!-- /.container -->
     <div ng-view></div>
     <div class="container">
 
