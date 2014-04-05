@@ -1,13 +1,28 @@
 //copyright 2004 LaoLin
 ;
-var LaolinApp = angular.module('LaolinApp', ['ui.bootstrap']);
+var LaolinApp = angular.module('LaolinApp', ['ui.bootstrap','ngRoute']);
 
 //A.1 通用数据
 LaolinApp.data={};
 LaolinApp.data.styles=['blue','green','red','yellow',
   'orange','pink','purple','lime','magenta','teal'];//,'white','black'
 
-
+LaolinApp.config(function ($routeProvider) {
+        $routeProvider
+            .when('/',
+                {
+                    controller: 'MarketingCtrl',
+                    templateUrl: 'p1.html'
+                })
+            //Define a route that has a route parameter in it (:customerID)
+            .when('/p2',
+                {
+                    controller: 'MarketingCtrl',
+                    templateUrl: 'p2.html'
+                })
+            .otherwise({ redirectTo: '/' });
+    });
+    
 //C.0 AppCtrl controller
 LaolinApp.controller('AppCtrl', function ($scope) {
   //DEBUG标记，正式页面应设为false
