@@ -35,7 +35,7 @@
         </div>
         <div class="navbar-collapse collapse"  collapse="isCollapsed">
           <ul class="nav navbar-nav">
-            <li ng-repeat="nav in navs" ng-class="{ active:nav.active }" ><a href="{{nav.link}}">{{nav.text}}</a></li>
+            <li ng-repeat="nav in navs" ng-class="{ active:isActive(nav.link) }" ><a href="{{nav.link}}">{{nav.text}}</a></li>
             <li class="dropdown ng-hide" ng-show="navdropdowns.text">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{navdropdowns.text}} <b class="caret"></b></a>
               <ul class="dropdown-menu">

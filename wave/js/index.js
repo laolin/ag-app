@@ -9,7 +9,7 @@ LaolinApp.data.styles=['blue','green','red','yellow',
 
 LaolinApp.config(function ($routeProvider) {
         $routeProvider
-            .when('/',
+            .when('/index',
                 {
                     controller: 'AppCtrl',
                     templateUrl: 'p0.html'
@@ -26,7 +26,7 @@ LaolinApp.config(function ($routeProvider) {
                     controller: 'MarketingCtrl',
                     templateUrl: 'p2.html'
                 })
-            .otherwise({ redirectTo: '/' });
+            .otherwise({ redirectTo: '/index' });
     });
 
 LaolinApp.service('waveService', function () {
@@ -53,15 +53,15 @@ LaolinApp.controller('AppCtrl', function ($scope, $rootScope) {
 });
 
 //C.1 TopNavCtrl controller
-LaolinApp.controller("TopNavCtrl", function ($scope) {
+LaolinApp.controller("TopNavCtrl", function ($scope,$location) {
 
   //页面左上角，APP名称
   $scope.appName = "LaoLin地震波助手";
   //导航菜单项目
   $scope.navs=[
-    {text:'首页',link:'#/',active:false},
-    {text:'Page1',link:'#/p1',active:true},
-    {text:'Page2',link:'#/p2',active:false}
+    {text:'首页',link:'#/index'},
+    {text:'Page1',link:'#/p1'},
+    {text:'Page2',link:'#/p2'}
   ];
   
   //导航菜单最右侧可下拉的项目（可选）
@@ -78,6 +78,14 @@ LaolinApp.controller("TopNavCtrl", function ($scope) {
     {text:'如何下载AutoCAD格式的地震波',link:'#/index7'},
     {text:'如何下载AutoCAD格式的反应谱',link:'#/index8'}
   ];
+  
+  $scope.isActive = function (path) {
+    if ("#"+$location.path().substr(0, path.length-1) == path) {
+      return true
+    } else {
+      return false;
+    }
+  }
 });
 
 //C.3 MarketingCtrl controller
