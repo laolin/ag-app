@@ -66,7 +66,7 @@ LaolinApp.controller("TopNavCtrl", function ($scope) {
 });
 
 //C.3 MarketingCtrl controller
-LaolinApp.controller("MarketingCtrl", function ($scope) {
+LaolinApp.controller("MarketingCtrl", function ($scope,$rootScope) {
   var row1=[
     {width:4,imgSize:200,link:'#/about',img:'http://files.laolin.com/2013/structural-engineering/linjp-2012.9.3-180x180.jpg',title:'个人简历',text:'林建萍，高级工程师，国家一级注册结构工程师'},
     {width:4,imgSize:200,link:'#/about',img:'http://files.laolin.com/2013/development/20130715-development.jpg',title:'老林编程',text:'编程是老林的业余爱好。'},
@@ -79,11 +79,12 @@ LaolinApp.controller("MarketingCtrl", function ($scope) {
     {width:3,imgSize:150,link:'#/about',img:'http://files.laolin.com/2013/structural-engineering/linjp-2012.9.3-180x180.jpg',title:'Ti4444444tle -2-4-1',text:'444444444test 测试text 测试 33333 测试'}
    ];
   $scope.rows=[row1,row2];
+  $rootScope.app.pageTitle="P2";
 });
 
 
 //C.2 CarouselDemoCtrl controller
-LaolinApp.controller('CarouselDemoCtrl',function ($scope) {
+LaolinApp.controller('CarouselDemoCtrl',function ($scope,$rootScope) {
   $scope.myInterval = 5000;
   var slides = $scope.slides = [];
   $scope.addSlide = function() {
@@ -96,6 +97,7 @@ LaolinApp.controller('CarouselDemoCtrl',function ($scope) {
   for (var i=0; i<4; i++) {
     $scope.addSlide();
   }
+  $rootScope.app.pageTitle="P1";
 });
 
 
