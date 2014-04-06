@@ -2,37 +2,92 @@
 
     
 
-LaolinApp.service('waveService', function () {
-  var waveNameList=["wave1","wave2","Elcetro","SHW01x"];
-  var waveData={"wave1":[1,2,1,3,4,5],"wave2":[21,22,21,23,24,25],
-      "Elcetro":[31,32,31,33,34,35],"SHW01x":[41,442,4441,43,4444,4445],};
+LaolinApp.service('waveService', ["$http","$log",function ($http,$log) {
+  var waveNameList=[];
+  var waveData={};
   var currentWaveId=-1;
   
+  var apiScript,
+    apiWave,
+    apiWaveList;
+  function init() {
+    if('127.0.0.1'==document.location.host) {
+      apiScript='../../a9/';
+    } else {
+      apiScript='http://api.laolin.com/v1.0/';
+    }
+    apiWave=apiScript+'?c=api&a=wave&callback=JSON_CALLBACK&b=';
+    apiWaveList=apiScript+'?c=api&a=wave&b=_list&callback=JSON_CALLBACK';
+  };
+  init();
+  
+  this.fetchWaveList = function() {
+    $log.log("fetchWaveList start");
+    return $http.jsonp(apiWaveList)  
+      .success(function(data){
+        waveNameList=data;
+        $log.log("fetchWaveList success");
+      })      
+      .error(function () {
+        console.log('fetchWaveList error')
+      });
+  };
+  this.fetchWaveData = function(id) {
+    $log.log("fetchWaveData start");
+    return $http.jsonp(apiWave+waveNameList[id])  
+      .success(function(data){
+        waveData[waveNameList[id]]=data;
+        $log.log("fetchWaveData success");
+      })      
+      .error(function () {
+        console.log('fetchWaveData error')
+      });
+  };
   this.getWaveList = function () {
     return waveNameList;
   };
   this.getWaveData = function (id) {
-    currentWaveId=id;
     return waveData[waveNameList[id]];
   };
+  
+  
   this.getCurrentWaveId = function() {
     return currentWaveId;
+  };
+  this.setCurrentWaveId = function(id) {
+    return currentWaveId=id;
   };
   this.getCurrentWaveName = function() {
     return currentWaveId>=0?waveNameList[currentWaveId]:"";
   };
-});
+}]);
 
-LaolinApp.controller('waveAnaCtrl', function ($scope, $rootScope,waveService) {
-  $rootScope.app={pageTitle:"地震波列表"};
+LaolinApp.controller('waveAnaCtrl', function ($scope, $rootScope,$log,waveService) {
+  $rootScope.app.pageTitle="地震波列表";
 
-  
   $scope.waves=waveService.getWaveList();
+  if($scope.waves.length==0){
+    waveService.fetchWaveList().then(function(data){
+      $scope.waves=waveService.getWaveList();
+    });
+  }
   $scope.getWaveData=function(id){
-    $scope.waveData=waveService.getWaveData(id)
-    $scope.waveId=waveService.getCurrentWaveId();
+    var data=waveService.getWaveData(id);
+    if(data && data.data){ //已经加载过了
+      $scope.waveData=data;
+      waveService.setCurrentWaveId($scope.waveId=id);
+      $log.log("Reuse data for waveId="+$scope.waveId);
+    }else{    //未加载，需要去加载数据
+      $log.log("No data for waveId="+id);
+      waveService.fetchWaveData(id).then(function(data){
+        $scope.waveData=waveService.getWaveData(id);
+        waveService.setCurrentWaveId($scope.waveId=id);
+        $log.log("Got data for waveId="+$scope.waveId);
+      });
+    }
   }
   $scope.waveId=waveService.getCurrentWaveId();
   $scope.waveData=waveService.getWaveData($scope.waveId)
   
+  $log.log("Current waveId is:"+$scope.waveId);
 });
