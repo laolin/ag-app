@@ -63,10 +63,20 @@ LaolinApp.service('waveService', ["$http","$log",function ($http,$log) {
 }]);
 
 LaolinApp.controller('waveListCtrl', 
-    ["$scope", "$rootScope","$log","waveService",
-    function ($scope, $rootScope,$log,waveService) {
-  $rootScope.app.pageTitle="地震波列表";
+    ["$scope", "$rootScope","$log","waveService","servicePlot","serviceCommon",
+    function ($scope, $rootScope,$log,waveService,servicePlot,serviceCommon) {
 
+  function loadWave(id) {
+    $scope.waveData=waveService.getWaveData(id);
+    waveService.setCurrentWaveId($scope.waveId=id);
+    $scope.waveName=waveService.getCurrentWaveName();
+    $log.log($scope.waveData);
+  }
+  $rootScope.app.pageTitle="地震波列表";
+  
+  serviceCommon.tplLoad("comm-plot-area.html","#box-chart1");
+  serviceCommon.tplLoad("wave-det-panel.html","#box-panel");
+  
   $scope.waves=waveService.getWaveList();
   if($scope.waves.length==0){
     waveService.fetchWaveList().then(function(data){
@@ -76,19 +86,18 @@ LaolinApp.controller('waveListCtrl',
   $scope.getWaveData=function(id){
     var data=waveService.getWaveData(id);
     if(data && data.data){ //已经加载过了
-      $scope.waveData=data;
-      waveService.setCurrentWaveId($scope.waveId=id);
+      loadWave(id);      
       $log.log("Reuse data for waveId="+$scope.waveId);
     }else{    //未加载，需要去加载数据
       $log.log("No data for waveId="+id);
       waveService.fetchWaveData(id).then(function(data){
-        $scope.waveData=waveService.getWaveData(id);
-        waveService.setCurrentWaveId($scope.waveId=id);
+        loadWave(id);      
         $log.log("Got data for waveId="+$scope.waveId);
       });
     }
   }
   $scope.waveId=waveService.getCurrentWaveId();
+  $scope.waveName=waveService.getCurrentWaveName();
   $scope.waveData=waveService.getWaveData($scope.waveId)
   
   $log.log("Current waveId is:"+$scope.waveId);

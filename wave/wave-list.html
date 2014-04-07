@@ -3,7 +3,11 @@
         <span ng-repeat="(key,wave) in waves">
           <a id="btn-wave-id-{{key}}" class="btn btn-info" ng-click="getWaveData(key)" >  name: {{wave}} </a> &nbsp;
         </span>
-        <p>WaveID:{{waveId}}</p>
-        <p>WaveData:{{waveData}}</p>
+      </div>
+      <div class="row" ng-show="waveId >= 0">
+        
+        <p>已加载地震波 <b class="label label-success">{{waveName}}</b></p>
+        <div id="box-chart1"></div>
+        <div id="box-panel"></div>
       </div>
     </div>
