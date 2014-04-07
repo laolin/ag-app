@@ -16,8 +16,8 @@ LaolinApp.service('waveService', ["$http","$log",function ($http,$log) {
     } else {
       apiScript='http://api.laolin.com/v1.0/';
     }
-    apiWave=apiScript+'?c=api&a=wave&callback=JSON_CALLBACK&b=';
-    apiWaveList=apiScript+'?c=api&a=wave&b=_list&callback=JSON_CALLBACK';
+    apiWave=apiScript+'?c=api&a=wave&js=JSON_CALLBACK&b=';
+    apiWaveList=apiScript+'?c=api&a=wave&b=_list&js=JSON_CALLBACK';
   };
   init();
   
