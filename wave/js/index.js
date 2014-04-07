@@ -19,6 +19,12 @@ LaolinApp.config(function ($routeProvider) {
         controller: 'waveListCtrl',
         templateUrl: 'wave-list.html'
       })
+    .when('/wave-det',
+      {
+        controller: 'waveDetCtrl',
+        templateUrl: 'wave-det.html'
+      })
+      
     .when('/p1',
       {
         controller: 'CarouselDemoCtrl',
@@ -55,6 +61,7 @@ LaolinApp.controller("TopNavCtrl", function ($scope,$location) {
   $scope.navs=[
     {text:'首页',link:'#/index'},
     {text:'地震波列表',link:'#/wave-list'},
+    {text:'地震波分析',link:'#/wave-det'},
     {text:'Page2',link:'#/p2'}
   ];
   

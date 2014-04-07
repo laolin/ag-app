@@ -62,7 +62,9 @@ LaolinApp.service('waveService', ["$http","$log",function ($http,$log) {
   };
 }]);
 
-LaolinApp.controller('waveListCtrl', function ($scope, $rootScope,$log,waveService) {
+LaolinApp.controller('waveListCtrl', 
+    ["$scope", "$rootScope","$log","waveService",
+    function ($scope, $rootScope,$log,waveService) {
   $rootScope.app.pageTitle="地震波列表";
 
   $scope.waves=waveService.getWaveList();
@@ -90,4 +92,17 @@ LaolinApp.controller('waveListCtrl', function ($scope, $rootScope,$log,waveServi
   $scope.waveData=waveService.getWaveData($scope.waveId)
   
   $log.log("Current waveId is:"+$scope.waveId);
-});
+}]);
+
+
+LaolinApp.controller('waveDetCtrl', 
+    ["$scope", "$rootScope","$log","waveService","servicePlot",
+    function ($scope, $rootScope,$log,waveService,servicePlot) {
+  $rootScope.app.pageTitle="地震波分析";
+  
+  servicePlot.loadChart("#box-chart1");
+  $scope.waveId=waveService.getCurrentWaveId();
+  $scope.waveData=waveService.getWaveData($scope.waveId)
+
+
+}]);
