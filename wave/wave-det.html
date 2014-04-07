@@ -1,6 +1,6 @@
     <div class="container marketing">
       <div class="row" ng-show="waveId < 0">
-        未加载地震波，请返回<a href="#/wave-list">地震波列表</a>加载一条地震波。
+        请先加载一条地震波，1秒钟后自动<a class="btn btn-info" href="#/wave-list">返回地震波列表</a>。
       </div>
       <div class="row"  ng-show="waveId >= 0">
         <p>已加载地震波 <b class="label label-success">{{waveName}}</b>

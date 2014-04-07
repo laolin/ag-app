@@ -61,10 +61,10 @@ LaolinApp.controller("TopNavCtrl", function ($scope,$location) {
   $scope.navs=[
     {text:'首页',link:'#/index'},
     {text:'地震波列表',link:'#/wave-list'},
-    {text:'地震波分析',link:'#/wave-det'},
-    {text:'Page2',link:'#/p2'}
+    {text:'地震波分析',link:'#/wave-det'}
   ];
   
+  /*
   //导航菜单最右侧可下拉的项目（可选）
   $scope.navdropdowns={text:"使用说明"};
   $scope.navdropdowns.items=[
@@ -79,6 +79,7 @@ LaolinApp.controller("TopNavCtrl", function ($scope,$location) {
     {text:'如何下载AutoCAD格式的地震波',link:'#/index7'},
     {text:'如何下载AutoCAD格式的反应谱',link:'#/index8'}
   ];
+  */
   
   $scope.isActive = function (path) {
     if ("#"+$location.path().substr(0, path.length-1) == path) {
