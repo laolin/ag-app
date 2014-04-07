@@ -96,12 +96,15 @@ LaolinApp.controller('waveListCtrl',
 
 
 LaolinApp.controller('waveDetCtrl', 
-    ["$scope", "$rootScope","$log","waveService","servicePlot",
-    function ($scope, $rootScope,$log,waveService,servicePlot) {
+    ["$scope", "$rootScope","$log","waveService","servicePlot","serviceCommon",
+    function ($scope, $rootScope,$log,waveService,servicePlot,serviceCommon) {
   $rootScope.app.pageTitle="地震波分析";
   
   servicePlot.loadChart("#box-chart1");
+  serviceCommon.tplLoad("wave-det-panel.html","#box-panel");
+  
   $scope.waveId=waveService.getCurrentWaveId();
+  $scope.waveName=waveService.getCurrentWaveName();
   $scope.waveData=waveService.getWaveData($scope.waveId)
 
 

@@ -1,0 +1,51 @@
+
+<div class="panel">
+    <div class="input-group">
+      
+      <span class="input-group-addon">已选地震波：<span class='label label-success' id='lable-wave-current'></span>：aMax</span>
+      <input type="text" name="amax" value="" class="form-control">
+      <span class="input-group-addon">nStep:</span>
+      <input type="text" name="nstep" class="form-control">
+      <span class="input-group-addon">StepStart:</span>
+      <input type="text" name="stepstart" value="0" class="form-control">
+    </div>
+    <p></p>
+  
+    <div class="input-group spec-run">
+      <span class="input-group-addon ">阻尼比:</span>
+      <input type="text" name="zitaspec" value="0.05" class="form-control  spec-run">
+      <span class="input-group-addon ">反应谱最长周期:</span>
+      <input type="text" name="tmaxspec" value="5.999" class="form-control  spec-run">
+      <span class="input-group-addon ">周期间隔:</span>
+      <input type="text" name="dtspec" value="0.01" class="form-control  spec-run">
+       <div class="input-group-btn">
+          <button class="btn btn-primary" onclick="spectrumAnalyse()"> 反应谱分析 </button>
+      </div>
+    </div>
+    <div class=" spec-plot">
+      <span class='label label-success' >已完成反应谱分析，阻尼比：<span id="para-spen-zita"></span></span>
+      <button class="btn btn-info" onclick="plotSpecU()">  伪位移反应谱:u </button>
+      <button class="btn btn-info" onclick="plotSpecV()">  伪速度反应谱:v </button>
+      <button class="btn btn-info" onclick="plotSpecA()">  伪加速度反应谱:a </button>
+      <button class="btn btn-info" onclick="plotSpecA2()">  绝对加速度反应谱:a </button>
+      <button class="btn btn-danger" onclick="delSpec()">  删除反应谱分析结果 </button>
+    </div>
+    <p></p>
+    <div class="input-group respon-run">
+      <span class="input-group-addon">阻尼比:</span>
+      <input type="text" name="zita" value="0.05" class="form-control">
+      <span class="input-group-addon">固有周期：</span>
+      <input type="text" name="tn" value="2" class="form-control">
+       <div class="input-group-btn">
+          <button class="btn btn-primary " onclick="responAnalyse()"> 指定周期的时程反应分析 </button>
+      </div>
+    </div>
+    <div class="  respon-plot">
+      <span class='label label-success' id='para-respon'></span>
+      <button class="btn btn-info  " onclick="plotResponU()"> 相对位移反应时程 </button>
+      <button class="btn btn-info  " onclick="plotResponV()"> 相对速度反应时程 </button>
+      <button class="btn btn-info  " onclick="plotResponA()"> 相对加速度反应时程 </button>
+      <button class="btn btn-info  " onclick="plotResponA2()"> 绝对加速度反应时程 </button>
+      <button class="btn btn-danger" onclick="delRespon()">  删除时程分析结果 </button>
+    </div>
+</div>

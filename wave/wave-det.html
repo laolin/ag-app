@@ -2,8 +2,12 @@
       <div class="row" ng-show="waveId < 0">
         未加载地震波，请返回<a href="#/wave-list">地震波列表</a>加载一条地震波。
       </div>
-      <div id="box-chart1"></div>
       <div class="row"  ng-show="waveId >= 0">
+        <p>已加载地震波 <b class="label label-success">{{waveName}}</b>
+          <a class="btn btn-info" href="#/wave-list">换一条地震波</a>
+        </p>
+        <div id="box-chart1"></div>
+        <div id="box-panel"></div>
         <p>WaveID:{{waveId}}</p>
         <p>WaveData:{{waveData}}</p>
       </div>
