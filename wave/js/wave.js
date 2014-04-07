@@ -62,7 +62,7 @@ LaolinApp.service('waveService', ["$http","$log",function ($http,$log) {
   };
 }]);
 
-LaolinApp.controller('waveAnaCtrl', function ($scope, $rootScope,$log,waveService) {
+LaolinApp.controller('waveListCtrl', function ($scope, $rootScope,$log,waveService) {
   $rootScope.app.pageTitle="地震波列表";
 
   $scope.waves=waveService.getWaveList();

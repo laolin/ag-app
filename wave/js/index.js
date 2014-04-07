@@ -16,7 +16,7 @@ LaolinApp.config(function ($routeProvider) {
       })
     .when('/wave-list',
       {
-        controller: 'waveAnaCtrl',
+        controller: 'waveListCtrl',
         templateUrl: 'wave-list.html'
       })
     .when('/p1',
