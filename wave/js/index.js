@@ -29,6 +29,11 @@ LaolinApp.config(function ($routeProvider) {
         controller: 'MarketingCtrl',
         templateUrl: 'p2.html'
       })
+    .when('/zz',
+      {
+        controller: 'MarketingCtrl',
+        templateUrl: 'zz-todo.html'
+      })
     .otherwise({ redirectTo: '/index' });
 });
 
