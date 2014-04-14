@@ -125,6 +125,7 @@ LaolinApp.controller('waveListCtrl',
     title:'地震波', 
     axesDefaults:{pad:1.0},
     seriesDefaults: {
+        shadow:false,
         rendererOptions: { smooth: false },
         lineWidth:1,
         markerOptions: { show:false }
