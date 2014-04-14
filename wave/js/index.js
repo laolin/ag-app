@@ -1,6 +1,6 @@
 //copyright 2004 LaoLin
 ;
-var LaolinApp = angular.module('LaolinApp', ['ui.bootstrap','ngRoute']);
+var LaolinApp = angular.module('LaolinApp', ['ui.bootstrap','ngRoute','ui.chart']);
 
 //A.1 通用数据
 LaolinApp.data={};
@@ -60,8 +60,7 @@ LaolinApp.controller("TopNavCtrl", function ($scope,$location) {
   //导航菜单项目
   $scope.navs=[
     {text:'首页',link:'#/index'},
-    {text:'地震波列表',link:'#/wave-list'},
-    {text:'地震波分析',link:'#/wave-det'}
+    {text:'地震波分析',link:'#/wave-list'}
   ];
   
   /*

@@ -71,10 +71,25 @@ LaolinApp.controller('waveListCtrl',
     waveService.setCurrentWaveId($scope.waveId=id);
     $scope.waveName=waveService.getCurrentWaveName();
     $log.log($scope.waveData);
+    plotWave(id);
+  }
+  
+  function plotWave(id) {
+    var dat=[];
+    $scope.chartData=[];
+    if(Array.isArray(id)) {
+      id.forEach(function(i){
+      dat=waveService.getWaveData(i).data;
+      $scope.chartData.push(dat);
+      });
+    } else {
+      dat=waveService.getWaveData(id).data;
+      $scope.chartData.push(dat);
+    }
   }
   $rootScope.app.pageTitle="地震波列表";
   
-  serviceCommon.tplLoad("comm-plot-area.html","#box-chart1");
+  //serviceCommon.tplLoad("comm-plot-area.html","#box-chart1");
   serviceCommon.tplLoad("wave-det-panel.html","#box-panel");
   
   $scope.waves=waveService.getWaveList();
@@ -96,10 +111,25 @@ LaolinApp.controller('waveListCtrl',
       });
     }
   }
+  
+  
+  // init data -------------
   $scope.waveId=waveService.getCurrentWaveId();
   $scope.waveName=waveService.getCurrentWaveName();
   $scope.waveData=waveService.getWaveData($scope.waveId)
   
+  
+  $scope.chartData = [[0]];
+    
+  $scope.chartOptions = {     
+    title:'地震波', 
+    axesDefaults:{pad:1.0},
+    seriesDefaults: {
+        rendererOptions: { smooth: false },
+        lineWidth:1,
+        markerOptions: { show:false }
+    }      
+  };
   $log.log("Current waveId is:"+$scope.waveId);
 }]);
 

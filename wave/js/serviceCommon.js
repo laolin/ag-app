@@ -4,10 +4,10 @@ tplLoad(tpl,selector):加载模板到selector中
 LaolinApp.service('serviceCommon',["$http","$log",function ($http,$log) {
   var tplHtml=[];
   function tplFetch(tpl) {
-    $log.log("fetchTpl");
+    $log.log("fetchTpl START: "+tpl);
     return $http.get(tpl).success(function(data){
       tplHtml[tpl]=data;
-      $log.log("fetchTpl DONE.");
+      $log.log("fetchTpl DONE: "+tpl);
     })
   }
   this.tplLoad=function(tpl,selector) {
