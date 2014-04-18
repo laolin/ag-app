@@ -1,5 +1,28 @@
+/***
+主要数据
+  weveObj地震波对象，包含地震波列表，波数据，波计算结果等
+    weveObj._$waveNameList 数组，地震波名字列表
+    weveObj._$currentWaveName 当前波名
+    weveObj['其他'] 一个成员表示一条地震波，包含数据，计算结果等。
+    
+内部函数:
+  init
+  absMax(array) 返回数组各元数最大绝对值
+
+外部服务：
+  fetchWaveList 通过ajax下载地震波列表
+  fetchWaveData(name) 通过ajax下载指定地震波数据
+  
+  getWaveObj 返回地震波对象，包含地震波列表，波数据，波计算结果等
+  
+  getWaveList 返回地震波列表
+  getWaveData(name) 返回地震波数据
+  getCurrentWaveName 返回波名
+  
+  setCurrentWaveName(name)
+  
+*/
 LaolinApp.service('waveService', ["$http","$log",function ($http,$log) {
-  var waveNameList=[];
   var weveObj={};
   
   var apiScript,
@@ -17,7 +40,7 @@ LaolinApp.service('waveService', ["$http","$log",function ($http,$log) {
     apiWaveList=apiScript+'?c=api&a=wave&b=_list&js=JSON_CALLBACK';
     
     weveObj._$waveNameList=[];
-    weveObj._$currentWaveId=-1;
+    weveObj._$currentWaveName='';
   };
   function absMax  ( ar ){
     mx=ar[0];
@@ -34,18 +57,19 @@ LaolinApp.service('waveService', ["$http","$log",function ($http,$log) {
     $log.log("fetchWaveList start");
     return $http.jsonp(apiWaveList)  
       .success(function(data){
-        waveNameList waveNameList=data;
+        weveObj._$waveNameList=data;
         $log.log("fetchWaveList success");
       })      
       .error(function () {
         console.log('fetchWaveList error')
       });
   };
-  this.fetchWaveData = function(id) {
+  //TODO: name不存在的情况
+  this.fetchWaveData = function(name) {
     $log.log("fetchWaveData start");
-    return $http.jsonp(apiWave+waveNameList[id])  
+    return $http.jsonp(apiWave+name)  
       .success(function(data){
-        weveObj[waveNameList[id]]=data;
+        weveObj[name]=data;
         $log.log("fetchWaveData success");
       })      
       .error(function () {
@@ -53,24 +77,22 @@ LaolinApp.service('waveService', ["$http","$log",function ($http,$log) {
       });
   };
   this.getWaveList = function () {
-    return waveNameList;
+    return weveObj._$waveNameList;
   };
   this.getWaveObj = function () {
     return weveObj;
   };
-  this.getWaveData = function (id) {
-    return weveObj[waveNameList[id]];
+  this.getWaveData = function (name) {
+    return weveObj[name];
   };
   
   
-  this.getCurrentWaveId = function() {
-    return weveObj._$currentWaveId;
-  };
-  this.setCurrentWaveId = function(id) {
-    return weveObj._$currentWaveId=id;
+  //这样是不行地，要看波名有效否，波数据在不在
+  this.setCurrentWaveName = function(name) {
+    return weveObj._$currentWaveName=name;
   };
   this.getCurrentWaveName = function() {
-    return weveObj._$currentWaveId>=0?waveNameList[weveObj._$currentWaveId]:"";
+    return weveObj._$currentWaveName;
   };
   
   

@@ -1,7 +1,7 @@
     <div class="container marketing">
       <div class="row">
         <span ng-repeat="(key,wave) in waves">
-          <a id="btn-wave-id-{{key}}" class="btn btn-info" ng-click="getWaveData(key)" >  name: {{wave}} </a> &nbsp;
+          <a id="btn-wave-id-{{key}}" class="btn btn-info" ng-click="getWaveData( wave )" >  name: {{wave}} </a> &nbsp;
         </span>
       </div>
       <div class="box-chart text-center" ui-chart="chartData" chart-options="chartOptions"></div>
