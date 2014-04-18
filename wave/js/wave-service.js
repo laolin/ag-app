@@ -1,9 +1,25 @@
-var laolin=laolin||{};
-
-
-laolin.waveAnalyser=(function() {
-  var w={};
-  w.absMax = function( ar ){
+LaolinApp.service('waveService', ["$http","$log",function ($http,$log) {
+  var waveNameList=[];
+  var weveObj={};
+  
+  var apiScript,
+    apiWave,
+    apiWaveList;
+  init();
+  //内部函数：
+  function init() {
+    if('127.0.0.1'==document.location.host) {
+      apiScript='../../a9/';
+    } else {
+      apiScript='http://api.laolin.com/v1.0/';
+    }
+    apiWave=apiScript+'?c=api&a=wave&js=JSON_CALLBACK&b=';
+    apiWaveList=apiScript+'?c=api&a=wave&b=_list&js=JSON_CALLBACK';
+    
+    weveObj._$waveNameList=[];
+    weveObj._$currentWaveId=-1;
+  };
+  function absMax  ( ar ){
     mx=ar[0];
     for( var i=1; i<ar.length; i++) {
       if(Math.abs(ar[i])>mx)
@@ -11,16 +27,75 @@ laolin.waveAnalyser=(function() {
     }
     return mx;
   };
-
-  //
-  w.newmark=function(waveInput,amax,dt,Tn,zita,stepCount,stepStart) {
+  
+  
+  //外部函数
+  this.fetchWaveList = function() {
+    $log.log("fetchWaveList start");
+    return $http.jsonp(apiWaveList)  
+      .success(function(data){
+        waveNameList waveNameList=data;
+        $log.log("fetchWaveList success");
+      })      
+      .error(function () {
+        console.log('fetchWaveList error')
+      });
+  };
+  this.fetchWaveData = function(id) {
+    $log.log("fetchWaveData start");
+    return $http.jsonp(apiWave+waveNameList[id])  
+      .success(function(data){
+        weveObj[waveNameList[id]]=data;
+        $log.log("fetchWaveData success");
+      })      
+      .error(function () {
+        console.log('fetchWaveData error')
+      });
+  };
+  this.getWaveList = function () {
+    return waveNameList;
+  };
+  this.getWaveObj = function () {
+    return weveObj;
+  };
+  this.getWaveData = function (id) {
+    return weveObj[waveNameList[id]];
+  };
+  
+  
+  this.getCurrentWaveId = function() {
+    return weveObj._$currentWaveId;
+  };
+  this.setCurrentWaveId = function(id) {
+    return weveObj._$currentWaveId=id;
+  };
+  this.getCurrentWaveName = function() {
+    return weveObj._$currentWaveId>=0?waveNameList[weveObj._$currentWaveId]:"";
+  };
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  this.newmark=function(waveInput,amax,dt,Tn,zita,stepCount,stepStart) {
     if(tn<2*dt)
       return {error:'Need: Tn >= 2*dt.'};
     count=waveInput.length;//总步数
     wave=[];
     if(count<2)
       return {error:'wave data error.'};
-    omax=w.absMax(wave);//原来的最大值
+    omax=absMax(wave);//原来的最大值
     if(omax<0.000001)
       return {error:'wave data is all zero.'};
     fac=Math.abs(amax/omax);
@@ -98,7 +173,5 @@ laolin.waveAnalyser=(function() {
     //console.log('a');console.log(A);
     return {u:U,v:V,a:A,a2:A2};
   
- }//end newmark()
- 
- return w;
-})();
+ };//end newmark()
+}]);
