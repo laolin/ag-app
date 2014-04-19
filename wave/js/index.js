@@ -8,37 +8,33 @@ LaolinApp.data.styles=['blue','green','red','yellow',
   'orange','pink','purple','lime','magenta','teal'];//,'white','black'
 
 LaolinApp.config(function ($routeProvider) {
+  partialsPath="partials/";
   $routeProvider
     .when('/index',
       {
         controller: 'AppCtrl',
-        templateUrl: 'p0.html'
+        templateUrl: partialsPath+'p0.html'
       })
     .when('/wave-list',
       {
         controller: 'waveListCtrl',
-        templateUrl: 'wave-list.html'
-      })
-    .when('/wave-det',
-      {
-        controller: 'waveDetCtrl',
-        templateUrl: 'wave-det.html'
+        templateUrl: partialsPath+'wave-list.html'
       })
       
     .when('/p1',
       {
         controller: 'CarouselDemoCtrl',
-        templateUrl: 'p1.html'
+        templateUrl: partialsPath+'p1.html'
       })
     .when('/p2',
       {
         controller: 'MarketingCtrl',
-        templateUrl: 'p2.html'
+        templateUrl: partialsPath+'p2.html'
       })
     .when('/zz',
       {
         controller: 'MarketingCtrl',
-        templateUrl: 'zz-todo.html'
+        templateUrl: partialsPath+'zz-todo.html'
       })
     .otherwise({ redirectTo: '/index' });
 });

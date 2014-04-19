@@ -107,12 +107,6 @@ LaolinApp.controller('waveListCtrl',
   $rootScope.app.pageTitle="地震波列表";
   
   
-  $scope.waves=waveService.getWaveList();
-  if($scope.waves.length==0){
-    waveService.fetchWaveList().then(function(data){
-      $scope.waves=waveService.getWaveList();
-    });
-  }
   $scope.getWaveData=function(name){
     var data=waveService.getWaveData(name);
     if(data && data.data){ //已经加载过了
@@ -135,12 +129,18 @@ LaolinApp.controller('waveListCtrl',
   
   
   // init data -------------
+  $scope.waves=waveService.getWaveList();
+  if($scope.waves.length==0){
+    waveService.fetchWaveList().then(function(data){
+      $scope.waves=waveService.getWaveList();
+    });
+  }
   $scope.waveObj=waveService.getWaveObj();
   $scope.waveName=waveService.getCurrentWaveName();
-  $scope.waveData=waveService.getWaveData($scope.waveName)
-  
-  
-  $scope.chartData = [[0]];
+  if($scope.waveName)
+    $scope.getWaveData($scope.waveName)
+  else   
+    $scope.chartData = [[0]];
     
   $scope.chartOptions = {     
     title:'', 
@@ -152,6 +152,6 @@ LaolinApp.controller('waveListCtrl',
         markerOptions: { show:false }
     }      
   };
-  $log.log("Current waveId is:"+$scope.waveId);
+  $log.log("Current wave: "+$scope.waveName);
 }]);
 

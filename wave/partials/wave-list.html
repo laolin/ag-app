@@ -1,7 +1,7 @@
     <div class="container marketing">
       <div class="row">
         <!-- left: -->
-        <div class="col-lg-3 box-wave-list">
+        <div class="col-md-3 box-wave-list">
           <div class="list-group">
             <a class="list-group-item" ng-repeat="(key,wave) in waves"
             id="btn-wave-id-{{key}}" 
@@ -16,10 +16,10 @@
         </div><!-- end left -->
         
         <!-- right -->
-        <div class="col-lg-9">
+        <div class="col-md-9">
           <div class="row well">
             <span ng-show="waveName">
-            <b class="label label-info">{{plotType}} </b>
+            
             地震波 <b class="label label-success">{{waveName}} </b>,
             点数<b class="label label-success">{{ waveObj[waveName]['count'] }}</b>, 
             时间间隔<b class="label label-success">{{ waveObj[waveName]['dt'] }}</b>,
@@ -27,6 +27,9 @@
             
             <div class="box-chart text-center" ui-chart="chartData" chart-options="chartOptions"></div>
           
+            <span ng-show="waveName">
+            <b class="label label-info">{{plotType}} </b>
+            </span>
           </div>
           <div class="row" ng-show="waveName">
             <div class="panel">
