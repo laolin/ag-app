@@ -7,7 +7,7 @@
     
 内部函数:
   init
-  absMax(array) 返回数组各元数最大绝对值
+  _absMax(array) 返回数组各元数最大绝对值
 
 外部服务：
   fetchWaveList 通过ajax下载地震波列表
@@ -24,7 +24,7 @@
 */
 LaolinApp.service('waveService', ["$http","$log",function ($http,$log) {
   var weveObj={};
-  
+  var console=$log;
   var apiScript,
     apiWave,
     apiWaveList;
@@ -42,7 +42,7 @@ LaolinApp.service('waveService', ["$http","$log",function ($http,$log) {
     weveObj._$waveNameList=[];
     weveObj._$currentWaveName='';
   };
-  function absMax  ( ar ){
+  function _absMax  ( ar ){
     mx=ar[0];
     for( var i=1; i<ar.length; i++) {
       if(Math.abs(ar[i])>mx)
@@ -70,6 +70,7 @@ LaolinApp.service('waveService', ["$http","$log",function ($http,$log) {
     return $http.jsonp(apiWave+name)  
       .success(function(data){
         weveObj[name]=data;
+        weveObj[name].absMax=_absMax(data.data);
         $log.log("fetchWaveData success");
       })      
       .error(function () {
@@ -87,7 +88,7 @@ LaolinApp.service('waveService', ["$http","$log",function ($http,$log) {
   };
   
   
-  //这样是不行地，要看波名有效否，波数据在不在
+  //TODO 这样是不行地，要看波名有效否，波数据在不在
   this.setCurrentWaveName = function(name) {
     return weveObj._$currentWaveName=name;
   };
@@ -97,6 +98,27 @@ LaolinApp.service('waveService', ["$http","$log",function ($http,$log) {
   
   
   
+  this.newmark = function(name) {
+    var obj=weveObj[name];
+    if( !obj || !obj.data) {
+      $log.log('newmark error:0: nodata');
+      return false;
+    }
+    waveInput=obj.data;
+    dt=obj.dt;
+    Tn=obj.Tn;
+    zita=obj.zita;
+    newMax=obj.newMax;
+    res=_newmark(waveInput,dt,Tn,zita,  newMax);
+    if(res.error) {
+      $log.log('newmark error :1:'+res.error);
+      return false;
+    }
+      $log.log('newmark done.');
+    obj.res=res;
+    return true;
+  };
+
   
   
   
@@ -105,23 +127,28 @@ LaolinApp.service('waveService', ["$http","$log",function ($http,$log) {
   
   
   
+  ///newmark法计算单自由度的反应时程，参考乔普拉结构动力学中文版第二版
+  ///waveInput:输入地震波数据
+  ///dt:地震波数据点的时间间隔
+  ///Tn:周期
+  ///zita:阻尼比
   
-  
-  
-  
-  
-  this.newmark=function(waveInput,amax,dt,Tn,zita,stepCount,stepStart) {
-    if(tn<2*dt)
+  ///newMax:需要缩放后的绝对值峰值，默认、0或小于0就是不缩放(=1)
+  ///stepCount:步数，默认全部
+  ///stepStart：开始步号，默认从0开始
+  function _newmark(waveInput,dt,Tn,zita,    newMax,stepCount,stepStart) {
+    if(Tn<2*dt)
       return {error:'Need: Tn >= 2*dt.'};
     count=waveInput.length;//总步数
     wave=[];
     if(count<2)
       return {error:'wave data error.'};
-    omax=absMax(wave);//原来的最大值
-    if(omax<0.000001)
+    absMax=_absMax(waveInput);//原来的最大值
+    if(absMax<0.000001)
       return {error:'wave data is all zero.'};
-    fac=Math.abs(amax/omax);
-    waveInput.forEach(function(v){
+    if('undefined'==typeof(newMax)||newMax<=0)fac=1;
+    else fac= Math.abs(newMax/absMax);
+    waveInput.forEach(function(v,i){
       wave[i]=v*fac;
     });
     if('undefined'==typeof(stepCount)||stepCount<0)stepCount=count;
@@ -164,7 +191,7 @@ LaolinApp.service('waveService', ["$http","$log",function ($http,$log) {
     console.log('k '+k);
     console.log('K '+K);  //*/
 
-    //console.log(wave);
+    console.log(wave);
     //step 2.0对每个时间步i进行计算
     for( i=0 ; /*i<count-1 && */i<stepCount-1; i++) { 
       //console.log(' ====  step : '+i);
@@ -193,7 +220,7 @@ LaolinApp.service('waveService', ["$http","$log",function ($http,$log) {
     //console.log('u');console.log(U);
     //console.log('v');console.log(V);
     //console.log('a');console.log(A);
-    return {u:U,v:V,a:A,a2:A2};
+    return {u:U,v:V,a:A,a2:A2,  Tn:Tn, zita:zita, fac:fac};//fac是比例系数
   
  };//end newmark()
 }]);

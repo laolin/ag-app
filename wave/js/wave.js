@@ -2,11 +2,16 @@ LaolinApp.controller('waveListCtrl',
     ["$scope", "$rootScope","$log","waveService","servicePlot","serviceCommon",
     function ($scope, $rootScope,$log,waveService,servicePlot,serviceCommon) {
 
+  var DEF_VALUE={
+    Tn:2.0,//单自由度时程分析的特征周期
+    TnMaxSpec:5.99999,//反应谱分析的最大周期
+    
+    zita:0.05//阻尼比
+  };
   function loadWave(name) {
     $scope.waveData=waveService.getWaveData(name);
     waveService.setCurrentWaveName($scope.waveName=name);
     $scope.waveName=waveService.getCurrentWaveName();
-    $log.log($scope.waveData);
     $log.log($scope.waveObj);
     plotWave(name);
   }
@@ -24,9 +29,32 @@ LaolinApp.controller('waveListCtrl',
       $scope.chartData.push(dat);
     }
   }
+  
+  $scope.plotResponU=function() {
+    $scope.chartData=[ $scope.waveObj[$scope.waveName].res.u ];
+  }
+  $scope.plotResponV=function() {
+    $scope.chartData=[ $scope.waveObj[$scope.waveName].res.v ];
+  }
+  $scope.plotResponA=function() {
+    $scope.chartData=[ $scope.waveObj[$scope.waveName].res.a ];
+  }
+  $scope.plotResponA2=function() {
+    $scope.chartData=[ $scope.waveObj[$scope.waveName].res.a2 ];
+  }
+  $scope.delRespon=function() {
+    delete $scope.waveObj[$scope.waveName].res;
+    plotWave($scope.waveName);
+  }
+  
+  
+  $scope.waveResponAnalyse=function() {
+    $log.log('waveResponAnalyse');
+    waveService.newmark($scope.waveName);
+    $scope.plotResponA2();
+  }
   $rootScope.app.pageTitle="地震波列表";
   
-  serviceCommon.tplLoad("wave-list-panel.html","#box-panel");
   
   $scope.waves=waveService.getWaveList();
   if($scope.waves.length==0){
@@ -42,7 +70,13 @@ LaolinApp.controller('waveListCtrl',
     }else{    //未加载，需要去加载数据
       $log.log("No data for waveName="+name);
       waveService.fetchWaveData(name).then(function(data){
-        loadWave(name);      
+        
+        loadWave(name);   
+        $scope.waveObj[name]['newMax']=$scope.waveObj[name]['newMax']||$scope.waveObj[name]['absMax']
+
+        $scope.waveObj[name]['Tn']=$scope.waveObj[name]['Tn']||DEF_VALUE.Tn;
+        $scope.waveObj[name]['zita']=$scope.waveObj[name]['zita']||DEF_VALUE.zita;
+        $scope.waveObj[name]['TnMaxSpec']=$scope.waveObj[name]['TnMaxSpec']||DEF_VALUE.TnMaxSpec;
         $log.log("Got data for waveName="+$scope.waveName);
       });
     }
