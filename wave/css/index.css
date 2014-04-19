@@ -175,3 +175,10 @@ body {
 .box-chart {
   width: 99%;
 }
+
+.box-wave-list {
+  max-height:400px;
+  overflow-y:auto;
+  cursor:pointer;
+  text-align:left;
+}

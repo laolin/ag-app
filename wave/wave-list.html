@@ -1,61 +1,75 @@
     <div class="container marketing">
       <div class="row">
-        <span ng-repeat="(key,wave) in waves">
-          <a id="btn-wave-id-{{key}}" class="btn btn-info" ng-click="getWaveData( wave )" >  name: {{wave}} </a> &nbsp;
-        </span>
-      </div>
-      <div class="row well">
-        <span ng-show="waveName">
-        <b class="label label-info">{{plotType}} </b>
-        地震波 <b class="label label-success">{{waveName}} </b>,
-        点数<b class="label label-success">{{ waveObj[waveName]['count'] }}</b>, 
-        时间间隔<b class="label label-success">{{ waveObj[waveName]['dt'] }}</b>,
-        峰值<b class="label label-success">{{ waveObj[waveName]['absMax'] }}</b></span>
+        <!-- left: -->
+        <div class="col-lg-3 box-wave-list">
+          <div class="list-group">
+            <a class="list-group-item" ng-repeat="(key,wave) in waves"
+            id="btn-wave-id-{{key}}" 
+            ng-class="{active:waveName==wave}"
+            ng-click="getWaveData( wave )">
+              {{wave}} {{wave}} {{wave}}
+              
+              <span class="badge" ng-if="waveObj[wave]">
+              <b ng-if="waveObj[wave]['res']">A,</b>L</span>
+            </a>
+          </div>
+
+        </div><!-- end left -->
         
-        <div class="box-chart text-center" ui-chart="chartData" chart-options="chartOptions"></div>
-      
-      </div>
-      <div class="row" ng-show="waveName">
-        <div class="panel">
-            <p></p>
-            <div class="input-group respon-run"  ng-hide="waveObj[waveName]['res']">
-              <span class="input-group-addon">地震波峰值:</span>
-              <input type="text" name="newMax" ng-model="waveData.newMax" value="" class="form-control">
-              <span class="input-group-addon">阻尼比:</span>
-              <input type="text" name="zita" ng-model="waveObj[waveName]['zita']" class="form-control">
-              <span class="input-group-addon">时程分析固有周期:</span>
-              <input type="text" name="tn" ng-model="waveObj[waveName]['Tn']"  class="form-control">
-              <span class="input-group-addon ">反应谱最长周期:</span>
-              <input type="text" name="TnSpecMax" ng-model="waveObj[waveName]['TnSpecMax']" class="form-control  spec-run">
-               <div class="input-group-btn">
-                  <button class="btn btn-primary " ng-click="waveAnalyse()"> 地震波分析 </button>
-              </div>
+        <!-- right -->
+        <div class="col-lg-9">
+          <div class="row well">
+            <span ng-show="waveName">
+            <b class="label label-info">{{plotType}} </b>
+            地震波 <b class="label label-success">{{waveName}} </b>,
+            点数<b class="label label-success">{{ waveObj[waveName]['count'] }}</b>, 
+            时间间隔<b class="label label-success">{{ waveObj[waveName]['dt'] }}</b>,
+            峰值<b class="label label-success">{{ waveObj[waveName]['absMax'] }}</b></span>
+            
+            <div class="box-chart text-center" ui-chart="chartData" chart-options="chartOptions"></div>
+          
+          </div>
+          <div class="row" ng-show="waveName">
+            <div class="panel">
+                <p></p>
+                <div class="input-group respon-run"  ng-hide="waveObj[waveName]['res']">
+                  <span class="input-group-addon">调整地震波峰值:</span>
+                  <input type="text" name="newMax" ng-model="waveData.newMax" value="" class="form-control">
+                  <span class="input-group-addon">阻尼比:</span>
+                  <input type="text" name="zita" ng-model="waveObj[waveName]['zita']" class="form-control">
+                  <span class="input-group-addon">时程分析固有周期:</span>
+                  <input type="text" name="tn" ng-model="waveObj[waveName]['Tn']"  class="form-control">
+                  <span class="input-group-addon ">反应谱最长周期:</span>
+                  <input type="text" name="TnSpecMax" ng-model="waveObj[waveName]['TnSpecMax']" class="form-control  spec-run">
+                   <div class="input-group-btn">
+                      <button class="btn btn-primary " ng-click="waveAnalyse()"> 地震波分析 </button>
+                  </div>
+                </div>
+                <div ng-show="waveObj[waveName]['res']">
+                  <div>
+                    已完成地震波分析，分析参数：
+                    地震波峰值<span class='label label-success'>{{waveObj[waveName]['newMax']}}</span>
+                    阻尼比<span class='label label-success'>{{waveObj[waveName]['zita']}}</span>，
+                    时程分析固有周期<span class='label label-success'>{{waveObj[waveName]['Tn']}}</span>
+                    <button class="btn btn-danger" ng-click="delResult()">  删除分析结果，重新分析 </button>
+                  </div>
+                  <div>
+                    时程分析结果：
+                    <button class="btn btn-info  " ng-click="plotResponU()"> 相对位移反应时程 </button>
+                    <button class="btn btn-info  " ng-click="plotResponV()"> 相对速度反应时程 </button>
+                    <button class="btn btn-info  " ng-click="plotResponA()"> 相对加速度反应时程 </button>
+                    <button class="btn btn-info  " ng-click="plotResponA2()"> 绝对加速度反应时程 </button>
+                  </div>
+                  <div>
+                  反应谱分析结果：
+                  <button class="btn btn-info" ng-click="plotSpecU()">  伪位移反应谱:U </button>
+                  <button class="btn btn-info" ng-click="plotSpecV()">  伪速度反应谱:V </button>
+                  <button class="btn btn-info" ng-click="plotSpecA()">  伪加速度反应谱:A </button>
+                  <button class="btn btn-info" ng-click="plotSpecA2()">  绝对加速度反应谱:A2 </button>
+                  </div>
+                </div>
             </div>
-            <div ng-show="waveObj[waveName]['res']">
-              <div>
-                已完成地震波分析，分析参数：
-                地震波峰值<span class='label label-success'>{{waveObj[waveName]['newMax']}}</span>
-                阻尼比<span class='label label-success'>{{waveObj[waveName]['zita']}}</span>，
-                时程分析固有周期<span class='label label-success'>{{waveObj[waveName]['Tn']}}</span>
-                <button class="btn btn-danger" ng-click="delResult()">  删除分析结果，重新分析 </button>
-              </div>
-              <div>
-                时程分析结果：
-                <button class="btn btn-info  " ng-click="plotResponU()"> 相对位移反应时程 </button>
-                <button class="btn btn-info  " ng-click="plotResponV()"> 相对速度反应时程 </button>
-                <button class="btn btn-info  " ng-click="plotResponA()"> 相对加速度反应时程 </button>
-                <button class="btn btn-info  " ng-click="plotResponA2()"> 绝对加速度反应时程 </button>
-              </div>
-              <div>
-              反应谱分析结果：
-              <button class="btn btn-info" ng-click="plotSpecU()">  伪位移反应谱:U </button>
-              <button class="btn btn-info" ng-click="plotSpecV()">  伪速度反应谱:V </button>
-              <button class="btn btn-info" ng-click="plotSpecA()">  伪加速度反应谱:A </button>
-              <button class="btn btn-info" ng-click="plotSpecA2()">  绝对加速度反应谱:A2 </button>
-              </div>
-            </div>
-        </div>
+          </div><!-- -->
+        </div> <!-- END right -->
       </div>
-
-
-    </div>
+   </div>
