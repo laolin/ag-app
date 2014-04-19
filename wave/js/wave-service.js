@@ -98,7 +98,17 @@ LaolinApp.service('waveService', ["$http","$log",function ($http,$log) {
   
   
   
-  this.newmark = function(name) {
+  this.waveRespone = function(name) {
+    var res=false;
+    if(weveObj[name] && weveObj[name]['Tn']) {
+      res=this.newmark(name,weveObj[name]['Tn']);
+    }      
+    if(res) {
+      weveObj[name]['res']=res;
+    }
+
+  }
+  this.newmark= function(name,Tn) {
     var obj=weveObj[name];
     if( !obj || !obj.data) {
       $log.log('newmark error:0: nodata');
@@ -106,7 +116,7 @@ LaolinApp.service('waveService', ["$http","$log",function ($http,$log) {
     }
     waveInput=obj.data;
     dt=obj.dt;
-    Tn=obj.Tn;
+    //Tn=obj.Tn;去掉这个，改为可变参数，方便做反应谱分析
     zita=obj.zita;
     newMax=obj.newMax;
     res=_newmark(waveInput,dt,Tn,zita,  newMax);
@@ -114,9 +124,8 @@ LaolinApp.service('waveService', ["$http","$log",function ($http,$log) {
       $log.log('newmark error :1:'+res.error);
       return false;
     }
-      $log.log('newmark done.');
-    obj.res=res;
-    return true;
+    //$log.log('newmark done.');
+    return res;
   };
 
   
@@ -191,7 +200,7 @@ LaolinApp.service('waveService', ["$http","$log",function ($http,$log) {
     console.log('k '+k);
     console.log('K '+K);  //*/
 
-    console.log(wave);
+    //console.log(wave);
     //step 2.0对每个时间步i进行计算
     for( i=0 ; /*i<count-1 && */i<stepCount-1; i++) { 
       //console.log(' ====  step : '+i);
@@ -220,7 +229,9 @@ LaolinApp.service('waveService', ["$http","$log",function ($http,$log) {
     //console.log('u');console.log(U);
     //console.log('v');console.log(V);
     //console.log('a');console.log(A);
-    return {u:U,v:V,a:A,a2:A2,  Tn:Tn, zita:zita, fac:fac};//fac是比例系数
+    return {u:U,v:V,a:A,a2:A2,  
+      maxU:_absMax(U),maxV:_absMax(V),maxA:_absMax(A),maxA2:_absMax(A2),
+      Tn:Tn, zita:zita, fac:fac};//fac是比例系数
   
  };//end newmark()
 }]);

@@ -4,7 +4,8 @@ LaolinApp.controller('waveListCtrl',
 
   var DEF_VALUE={
     Tn:2.0,//单自由度时程分析的特征周期
-    TnMaxSpec:5.99999,//反应谱分析的最大周期
+    TnSpecMax:5.99999,//反应谱分析的最大周期
+    TnSpecDelta:0.01,//反应谱分析的周期间隔
     
     zita:0.05//阻尼比
   };
@@ -17,6 +18,7 @@ LaolinApp.controller('waveListCtrl',
   }
   
   function plotWave(name) {
+    $scope.plotType='波形图';
     var dat=[];
     $scope.chartData=[];
     if(Array.isArray(name)) {
@@ -31,28 +33,77 @@ LaolinApp.controller('waveListCtrl',
   }
   
   $scope.plotResponU=function() {
+    $scope.plotType='相对位移反应时程';
     $scope.chartData=[ $scope.waveObj[$scope.waveName].res.u ];
   }
   $scope.plotResponV=function() {
+    $scope.plotType='相对速度反应时程';
     $scope.chartData=[ $scope.waveObj[$scope.waveName].res.v ];
   }
   $scope.plotResponA=function() {
+    $scope.plotType='相对加速度反应时程';
     $scope.chartData=[ $scope.waveObj[$scope.waveName].res.a ];
   }
   $scope.plotResponA2=function() {
+    $scope.plotType='绝对加速度反应时程';
     $scope.chartData=[ $scope.waveObj[$scope.waveName].res.a2 ];
   }
-  $scope.delRespon=function() {
+  
+  $scope.plotSpecU=function() {
+    $scope.plotType='伪位移反应谱:U';
+    $scope.chartData=[ $scope.waveObj[$scope.waveName].spec.u ];
+  }
+  $scope.plotSpecV=function() {
+    $scope.plotType='伪速度反应谱:V';
+    $scope.chartData=[ $scope.waveObj[$scope.waveName].spec.v ];
+  }
+  $scope.plotSpecA=function() {
+    $scope.plotType='伪加速度反应谱:A';
+    $scope.chartData=[ $scope.waveObj[$scope.waveName].spec.a ];
+  }
+  $scope.plotSpecA2=function() {
+    $scope.plotType='绝对加速度反应谱:A2';
+    $scope.chartData=[ $scope.waveObj[$scope.waveName].spec.a2 ];
+  }
+  
+  $scope.delResult=function() {
     delete $scope.waveObj[$scope.waveName].res;
+    delete $scope.waveObj[$scope.waveName].spec;
     plotWave($scope.waveName);
   }
   
   
-  $scope.waveResponAnalyse=function() {
-    $log.log('waveResponAnalyse');
-    waveService.newmark($scope.waveName);
-    $scope.plotResponA2();
+  
+  
+  $scope.waveAnalyse=function() {
+    $scope.waveResponAnalyse();
+    $scope.waveSpectrumAnalyse();
+    $scope.plotSpecA2();
   }
+  $scope.waveResponAnalyse=function() {
+    waveService.waveRespone($scope.waveName);
+  }
+  $scope.waveSpectrumAnalyse=function() {
+    var obj=$scope.waveObj[$scope.waveName]
+    var spec={u:new Array(len),v:new Array(len),a:new Array(len),a2:new Array(len)};
+    spec.dtn=DEF_VALUE.TnSpecDelta;
+    var len=Math.ceil(obj.TnSpecMax/spec.dtn);
+    for(kk=1;  kk< len;  kk++) {
+      tn=kk*spec.dtn;
+      if(tn<2*dt)continue;
+      //console.log('tn='+tn);
+      rs=waveService.newmark($scope.waveName,tn);
+      
+      spec.u[kk]=rs.maxU;
+      spec.v[kk]=rs.maxV;
+      spec.a[kk]=rs.maxA;
+      spec.a2[kk]=rs.maxA2;
+    }
+    obj['spec']=spec;
+
+    
+  }
+  
   $rootScope.app.pageTitle="地震波列表";
   
   
@@ -76,7 +127,7 @@ LaolinApp.controller('waveListCtrl',
 
         $scope.waveObj[name]['Tn']=$scope.waveObj[name]['Tn']||DEF_VALUE.Tn;
         $scope.waveObj[name]['zita']=$scope.waveObj[name]['zita']||DEF_VALUE.zita;
-        $scope.waveObj[name]['TnMaxSpec']=$scope.waveObj[name]['TnMaxSpec']||DEF_VALUE.TnMaxSpec;
+        $scope.waveObj[name]['TnSpecMax']=$scope.waveObj[name]['TnSpecMax']||DEF_VALUE.TnSpecMax;
         $log.log("Got data for waveName="+$scope.waveName);
       });
     }
@@ -92,7 +143,7 @@ LaolinApp.controller('waveListCtrl',
   $scope.chartData = [[0]];
     
   $scope.chartOptions = {     
-    title:'地震波', 
+    title:'', 
     axesDefaults:{pad:1.0},
     seriesDefaults: {
         shadow:false,
