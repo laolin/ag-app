@@ -127,8 +127,8 @@ LaolinApp.controller('waveListCtrl',
     }
   }
   
-  
   // init data -------------
+  serviceCommon.appNotify('欢迎光临~~');
   $scope.waves=waveService.getWaveList();
   if($scope.waves.length==0){
     waveService.fetchWaveList().then(function(data){

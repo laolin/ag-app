@@ -1,7 +1,8 @@
 /**
 tplLoad(tpl,selector):加载模板到selector中
 */
-LaolinApp.service('serviceCommon',["$http","$log",function ($http,$log) {
+LaolinApp.service('serviceCommon',["$http","$log","$interval",
+    function ($http,$log,$interval) {
   var tplHtml=[];
   function tplFetch(tpl) {
     $log.log("fetchTpl START: "+tpl);
@@ -31,6 +32,16 @@ LaolinApp.service('serviceCommon',["$http","$log",function ($http,$log) {
   }
   this.appConfigSet=function(k,v) {
     return appConfig[k]=v;
+  }
+  appConfig.CloseNotify=function() {
+      delete appConfig.notify;
+  }
+  this.appNotify=function(text  ,delay,type) {
+    
+    if('undefined'==typeof(delay)||delay<=0)delay=3000;
+    if('undefined'==typeof(type))type='success';
+    $interval(appConfig.CloseNotify,delay,1);
+    return appConfig.notify={text:text,type:type};
   }
   //END: app config
   //WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
