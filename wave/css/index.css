@@ -176,6 +176,9 @@ body {
   width: 99%;
 }
 
+.cursor-pointer {
+  cursor:pointer;
+}
 .box-wave-list {
   max-height:500px;
   overflow-y:auto;

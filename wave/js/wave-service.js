@@ -22,7 +22,8 @@
   setCurrentWaveName(name)
   
 */
-LaolinApp.service('waveService', ["$http","$log",function ($http,$log) {
+LaolinApp.service('waveService', ["$http","$log","serviceCommon",
+    function ($http,$log,serviceCommon) {
   var weveObj={};
   var console=$log;
   var apiScript,
@@ -54,27 +55,27 @@ LaolinApp.service('waveService', ["$http","$log",function ($http,$log) {
   
   //外部函数
   this.fetchWaveList = function() {
-    $log.log("fetchWaveList start");
+    serviceCommon.appNotify("fetchWaveList start",0,'warning');
     return $http.jsonp(apiWaveList)  
       .success(function(data){
         weveObj._$waveNameList=data;
-        $log.log("fetchWaveList success");
+        serviceCommon.appNotify("fetchWaveList success",500,'success');
       })      
       .error(function () {
-        console.log('fetchWaveList error')
+        serviceCommon.appNotify('fetchWaveList error',0,'danger')
       });
   };
   //TODO: name不存在的情况
   this.fetchWaveData = function(name) {
-    $log.log("fetchWaveData start");
+    serviceCommon.appNotify("fetchWaveData start",0,'warning');
     return $http.jsonp(apiWave+name)  
       .success(function(data){
         weveObj[name]=data;
         weveObj[name].absMax=_absMax(data.data);
-        $log.log("fetchWaveData success");
+        serviceCommon.appNotify("fetchWaveData success",500,'success');
       })      
       .error(function () {
-        console.log('fetchWaveData error')
+        serviceCommon.appNotify('fetchWaveData error',0,'danger')
       });
   };
   this.getWaveList = function () {

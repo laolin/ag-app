@@ -15,6 +15,7 @@ LaolinApp.controller('waveListCtrl',
     $scope.waveName=waveService.getCurrentWaveName();
     $log.log($scope.waveObj);
     plotWave(name);
+    serviceCommon.appNotify("Current wave: "+$scope.waveName,5000);
   }
   
   function plotWave(name) {
@@ -76,9 +77,11 @@ LaolinApp.controller('waveListCtrl',
   
   
   $scope.waveAnalyse=function() {
+    serviceCommon.appNotify("waveAnalyse start",0,'warning');
     $scope.waveResponAnalyse();
     $scope.waveSpectrumAnalyse();
     $scope.plotSpecA2();
+    serviceCommon.appNotify("waveAnalyse done",500,'success');
   }
   $scope.waveResponAnalyse=function() {
     waveService.waveRespone($scope.waveName);
@@ -128,7 +131,6 @@ LaolinApp.controller('waveListCtrl',
   }
   
   // init data -------------
-  serviceCommon.appNotify('欢迎光临~~');
   $scope.waves=waveService.getWaveList();
   if($scope.waves.length==0){
     waveService.fetchWaveList().then(function(data){
@@ -152,6 +154,6 @@ LaolinApp.controller('waveListCtrl',
         markerOptions: { show:false }
     }      
   };
-  $log.log("Current wave: "+$scope.waveName);
+  serviceCommon.appNotify("Current wave: "+$scope.waveName,5000);
 }]);
 

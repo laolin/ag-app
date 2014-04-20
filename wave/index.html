@@ -53,10 +53,9 @@
    
 
 
-    <div class="container" ng-if="appConfig.notify">
-      <div class="alert alert-{{appConfig.notify.type}}">
+    <div class="container cursor-pointer" ng-if="appConfig.notify">
+      <div class="alert alert-{{appConfig.notify.type}}" ng-click="appConfig.CloseNotify()">
         {{appConfig.notify.text}}
-        <button type="button" class="close" aria-hidden="true" ng-click="appConfig.CloseNotify()">&times;</button>
       </div>
     </div>
     <div ng-view>

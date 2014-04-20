@@ -23,7 +23,7 @@ LaolinApp.service('serviceCommon',["$http","$log","$interval",
   };;
   //MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
   //BEGIN: app config
-  var appConfig={};
+  var appConfig={notify:{}};
   this.appConfigObj=function() {
     return appConfig;
   }
@@ -34,13 +34,21 @@ LaolinApp.service('serviceCommon',["$http","$log","$interval",
     return appConfig[k]=v;
   }
   appConfig.CloseNotify=function() {
-      delete appConfig.notify;
+      //delete appConfig.notify;
+      appConfig.notify={text:'Ready.',type:'info'}
   }
   this.appNotify=function(text  ,delay,type) {
     if('undefined'==typeof(delay))delay=0;
-    if('undefined'==typeof(type))type='success';
-    if(delay>0)$interval(appConfig.CloseNotify,delay,1);
-    return appConfig.notify={text:text,type:type};
+    if('undefined'==typeof(type))type='info';
+    if(appConfig.notify.timer) {
+      $interval.cancel(appConfig.notify.timer);
+      appConfig.notify.timer=0;
+    }
+    if(delay>0){
+      appConfig.notify.timer=$interval(appConfig.CloseNotify,delay,1);
+    }
+    appConfig.notify.text=text;
+    appConfig.notify.type=type;
   }
   //END: app config
   //WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
