@@ -1,6 +1,6 @@
 LaolinApp.controller('waveListCtrl', 
-    ["$scope", "$rootScope","$log","waveService","servicePlot","serviceCommon",
-    function ($scope, $rootScope,$log,waveService,servicePlot,serviceCommon) {
+    ["$scope", "$rootScope","$log","waveService","serviceCommon",
+    function ($scope, $rootScope,$log,waveService,serviceCommon) {
 
   var DEF_VALUE={
     Tn:2.0,//单自由度时程分析的特征周期
