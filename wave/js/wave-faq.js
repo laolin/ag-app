@@ -2,10 +2,10 @@
 ;
 
 //C.2 CarouselDemoCtrl controller
-LaolinApp.controller('waveFaqCtrl',function ($scope,$rootScope) {
-  
-  $rootScope.app.pageTitle="FAQ";
-  
+LaolinApp.controller('waveFaqCtrl',['$scope','serviceCommon',
+    function ($scope,serviceCommon) {
+  serviceCommon.appConfigSet('pageTitle','FAQ');
+
   $scope.myInterval = 5000;
   $scope.slides = getFaq();
   //style: LaolinApp.data.styles[slides.length%LaolinApp.data.styles.length],
@@ -24,5 +24,5 @@ LaolinApp.controller('waveFaqCtrl',function ($scope,$rootScope) {
     });
     return qa;
   }
-});
+}]);
 

@@ -19,6 +19,20 @@ LaolinApp.service('serviceCommon',["$http","$log",function ($http,$log) {
         $(selector).html(tplHtml[tpl]);
       });
     }
+  };;
+  //MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+  //BEGIN: app config
+  var appConfig={};
+  this.appConfigObj=function() {
+    return appConfig;
   }
+  this.appConfigGet=function(k) {
+    return appConfig[k];
+  }
+  this.appConfigSet=function(k,v) {
+    return appConfig[k]=v;
+  }
+  //END: app config
+  //WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
   
 }]);

@@ -41,18 +41,20 @@ LaolinApp.config(function ($routeProvider) {
 
     
 //C.0 AppCtrl controller
-LaolinApp.controller('appCtrl', function ($scope, $rootScope) {
+LaolinApp.controller('appCtrl', ['$scope', '$rootScope','serviceCommon',
+    function ($scope, $rootScope,serviceCommon) {
   //DEBUG标记，正式页面应设为false
-  $scope.debug=false;
-  $rootScope.app={pageTitle:"首页"};
+  $rootScope.appConfig=serviceCommon.appConfigObj();
+  
+  serviceCommon.appConfigSet('debug',false);
+  serviceCommon.appConfigSet('pageTitle','首页');
+  serviceCommon.appConfigSet('appName','LaoLin地震波助手');
   //$scope.initok=true;
-});
+}]);
 
 //C.1 TopNavCtrl controller
 LaolinApp.controller("TopNavCtrl", function ($scope,$location) {
 
-  //页面左上角，APP名称
-  $scope.appName = "LaoLin地震波助手";
   //导航菜单项目
   $scope.navs=[
     {text:'首页',link:'#/index'},
@@ -87,7 +89,8 @@ LaolinApp.controller("TopNavCtrl", function ($scope,$location) {
 });
 
 //C.3 MarketingCtrl controller
-LaolinApp.controller("MarketingCtrl", function ($scope,$rootScope,waveService) {
+LaolinApp.controller("MarketingCtrl", ['$scope','serviceCommon',
+    function ($scope,serviceCommon) {
   var row1=[
     {width:4,imgSize:200,link:'#/about',img:'http://files.laolin.com/2013/structural-engineering/linjp-2012.9.3-180x180.jpg',title:'个人简历',text:'林建萍，高级工程师，国家一级注册结构工程师'},
     {width:4,imgSize:200,link:'#/about',img:'http://files.laolin.com/2013/development/20130715-development.jpg',title:'老林编程',text:'编程是老林的业余爱好。'},
@@ -100,15 +103,9 @@ LaolinApp.controller("MarketingCtrl", function ($scope,$rootScope,waveService) {
     {width:3,imgSize:150,link:'#/about',img:'http://files.laolin.com/2013/structural-engineering/linjp-2012.9.3-180x180.jpg',title:'Ti4444444tle -2-4-1',text:'444444444test 测试text 测试 33333 测试'}
    ];
   $scope.rows=[row1,row2];
-  $scope.waves=waveService.getWaveList();
-  $scope.getWaveData=function(id){
-    $scope.waveData=waveService.getWaveData(id)
-    $scope.waveId=waveService.getCurrentWaveId();
-  }
-  $scope.waveId=waveService.getCurrentWaveId();
-  $scope.waveData=waveService.getWaveData($scope.waveId)
-  $rootScope.app.pageTitle="P2";
-});
+  
+  serviceCommon.appConfigSet('pageTitle','test page 2');
+}]);
 
 
 

@@ -1,6 +1,6 @@
 LaolinApp.controller('waveListCtrl', 
-    ["$scope", "$rootScope","$log","waveService","serviceCommon",
-    function ($scope, $rootScope,$log,waveService,serviceCommon) {
+    ["$scope","$log","waveService","serviceCommon",
+    function ($scope,$log,waveService,serviceCommon) {
 
   var DEF_VALUE={
     Tn:2.0,//单自由度时程分析的特征周期
@@ -104,7 +104,7 @@ LaolinApp.controller('waveListCtrl',
     
   }
   
-  $rootScope.app.pageTitle="地震波分析";
+  serviceCommon.appConfigSet('pageTitle','地震波分析');
   
   
   $scope.getWaveData=function(name){
