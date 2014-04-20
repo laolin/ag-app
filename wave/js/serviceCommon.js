@@ -37,10 +37,9 @@ LaolinApp.service('serviceCommon',["$http","$log","$interval",
       delete appConfig.notify;
   }
   this.appNotify=function(text  ,delay,type) {
-    
-    if('undefined'==typeof(delay)||delay<=0)delay=3000;
+    if('undefined'==typeof(delay))delay=0;
     if('undefined'==typeof(type))type='success';
-    $interval(appConfig.CloseNotify,delay,1);
+    if(delay>0)$interval(appConfig.CloseNotify,delay,1);
     return appConfig.notify={text:text,type:type};
   }
   //END: app config
