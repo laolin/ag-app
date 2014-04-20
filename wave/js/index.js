@@ -12,20 +12,20 @@ LaolinApp.config(function ($routeProvider) {
   $routeProvider
     .when('/index',
       {
-        controller: 'AppCtrl',
+        controller: 'appCtrl',
         templateUrl: partialsPath+'p0.html'
       })
     .when('/wave-list',
       {
         controller: 'waveListCtrl',
         templateUrl: partialsPath+'wave-list.html'
+      })      
+    .when('/wave-faq',
+      {
+        controller: 'waveFaqCtrl',
+        templateUrl: partialsPath+'wave-faq.html'
       })
       
-    .when('/p1',
-      {
-        controller: 'CarouselDemoCtrl',
-        templateUrl: partialsPath+'p1.html'
-      })
     .when('/p2',
       {
         controller: 'MarketingCtrl',
@@ -41,10 +41,10 @@ LaolinApp.config(function ($routeProvider) {
 
     
 //C.0 AppCtrl controller
-LaolinApp.controller('AppCtrl', function ($scope, $rootScope) {
+LaolinApp.controller('appCtrl', function ($scope, $rootScope) {
   //DEBUG标记，正式页面应设为false
   $scope.debug=false;
-  $rootScope.app={pageTitle:"地震波助手"};
+  $rootScope.app={pageTitle:"首页"};
   //$scope.initok=true;
 });
 
@@ -56,7 +56,8 @@ LaolinApp.controller("TopNavCtrl", function ($scope,$location) {
   //导航菜单项目
   $scope.navs=[
     {text:'首页',link:'#/index'},
-    {text:'地震波分析',link:'#/wave-list'}
+    {text:'地震波分析',link:'#/wave-list'},
+    {text:'FAQ',link:'#/wave-faq'}
   ];
   
   /*
@@ -110,22 +111,6 @@ LaolinApp.controller("MarketingCtrl", function ($scope,$rootScope,waveService) {
 });
 
 
-//C.2 CarouselDemoCtrl controller
-LaolinApp.controller('CarouselDemoCtrl',function ($scope,$rootScope) {
-  $scope.myInterval = 5000;
-  var slides = $scope.slides = [];
-  $scope.addSlide = function() {
-    slides.push({
-      style: LaolinApp.data.styles[slides.length%LaolinApp.data.styles.length],
-      text: ['More','Extra','Lots of','Surplus'][slides.length % 4] + ' ' +
-        ['Cats', 'Kittys', 'Felines', 'Cutes',"Dog"][slides.length % 5]
-    });
-  };
-  for (var i=0; i<4; i++) {
-    $scope.addSlide();
-  }
-  $rootScope.app.pageTitle="P1";
-});
 
 
 

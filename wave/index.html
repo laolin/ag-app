@@ -8,7 +8,7 @@
     <meta name="author" content="">
     <link rel="shortcut icon" href="/favicon.ico">
 
-    <title>{{app.pageTitle}} :: by LaoLin</title>
+    <title>{{app.pageTitle}} :: 地震波分析工具 - by LaoLin</title>
 
     <!-- Bootstrap core CSS -->
     <link href="./lib/bs311/css/bootstrap.min.css" rel="stylesheet">
@@ -19,7 +19,7 @@
 
     <link href="css/index.css" rel="stylesheet">
   </head>
-  <body ng-controller="AppCtrl">
+  <body ng-controller="appCtrl">
     <!-- NAVBAR
     ================================================== -->
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation"  ng-controller="TopNavCtrl">
@@ -54,7 +54,21 @@
 
 
 
-    <div ng-view></div>
+    <div ng-view>
+    
+    
+  <div class="jumbotron">  
+  <h2>欢迎使用 <a href="#/wave-list">地震波分析工具</a></h2>
+  
+  <h2>主要功能：</h2><ul>
+  <li>计算指定地震波的弹性时程反应。<code>计算方法：Newmark平均加速度法。</code>
+  <li>计算指定地震波的弹性反应谱。<code>计算方法：Newmark平均加速度法。</code>
+  </ul>
+  <p>结构体系的基础受到地面运动（地震）的激励作用下，<code>伪加速度</code>是指结构体系针对运动的基础的相对加速度。<code>绝对加速度</code>是指结构体系针对静止的大地的加速度。
+  <p><a class="btn btn-primary btn-lg" href='#/wave-list'>加载地震波分析工具</a></p>
+  </div>
+    
+    </div>
     <div class="container">
 
       <!-- FOOTER -->
@@ -70,7 +84,7 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="./lib/jquery-1.11.0.min.js"></script>
-    <script src="./lib/jqPlot/jquery.jqplot.js"></script>
+    <script src="./lib/jqPlot/jquery.jqplot.min.js"></script>
     <script src="./lib/angular.min.js"></script>
     <script src="./lib/angular-route.min.js"></script>
     <script src="./lib/ui-bootstrap-tpls-0.10.0.min.js"></script>
@@ -81,6 +95,7 @@
     <script src="js/serviceCommon.js"></script>
     <script src="js/servicePlot.js"></script>
     <script src="js/wave-service.js"></script>
+    <script src="js/wave-faq.js"></script>
     <script src="js/wave.js"></script>
     
   </body>

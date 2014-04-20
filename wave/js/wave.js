@@ -104,7 +104,7 @@ LaolinApp.controller('waveListCtrl',
     
   }
   
-  $rootScope.app.pageTitle="地震波列表";
+  $rootScope.app.pageTitle="地震波分析";
   
   
   $scope.getWaveData=function(name){
