@@ -71,12 +71,14 @@ LaolinApp.controller('waveListCtrl',
     var spec={u:new Array(len),v:new Array(len),a:new Array(len),a2:new Array(len)};
     spec.dtn=DEF_VALUE.TnSpecDelta;
     var len=Math.ceil(obj.TnSpecMax/spec.dtn);
-    for(kk=1;  kk< len;  kk++) {
+    for(kk=0;  kk< len;  kk++) {
       tn=kk*spec.dtn;
-      if(tn<2*dt)continue;
+      if(tn<2*dt) {
+        rs={maxU:0,maxV:0,maxA:0,maxA2:0};//避免undefined, NAN数据
+      } else {
       //console.log('tn='+tn);
-      rs=waveService.newmark($scope.waveName,tn);
-      
+        rs=waveService.newmark($scope.waveName,tn);
+      }
       spec.u[kk]=rs.maxU;
       spec.v[kk]=rs.maxV;
       spec.a[kk]=rs.maxA;
@@ -115,8 +117,19 @@ LaolinApp.controller('waveListCtrl',
   ///把xx地震波的绝对加速度反应谱下载为scr文件
   //type: wave, resU,resV,resA,resA2, specU,specV,specA,specA2
   $scope.dataToScr=function() {
+    o=waveService.getDataByType($scope.waveName);
     
-    serviceCommon.arrayToACADPlineScrFile($scope.waveName+'.wave.scr',waveObj[$scope.waveName].data,1,1)
+    if(!o){      
+      serviceCommon.appNotify("无法下载数据",0,'warning');
+      return false;
+    }
+    max = Math.max(Math.max.apply(null, o.data),
+     -Math.min.apply(null, o.data))
+    if(max<1e-6)return false;
+    sy=+(o.data.length/max/2).toPrecision(1);
+    //将就先用一下： waveObj._$dataType，以后要去掉对_$xx对象的直接使用。
+    serviceCommon.appNotify("开始下载的AutoCAD .scr文件。【注意：Y向已缩放"+sy+"倍】",0,'success');
+    serviceCommon.arrayToACADPlineScrFile($scope.waveName+"_"+$scope.waveObj._$dataType+'_sy_'+sy+'.scr',o.data,1,sy)
   }
   
   // init data -------------
