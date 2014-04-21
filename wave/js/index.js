@@ -12,8 +12,8 @@ LaolinApp.config(function ($routeProvider) {
   $routeProvider
     .when('/index',
       {
-        controller: 'appCtrl',
-        templateUrl: partialsPath+'p0.html'
+        controller: 'waveFaqCtrl',
+        templateUrl: partialsPath+'wave-faq.html'
       })
     .when('/wave-list',
       {
@@ -58,8 +58,7 @@ LaolinApp.controller("TopNavCtrl", function ($scope,$location) {
   //导航菜单项目
   $scope.navs=[
     {text:'首页',link:'#/index'},
-    {text:'地震波分析',link:'#/wave-list'},
-    {text:'FAQ',link:'#/wave-faq'}
+    {text:'地震波分析',link:'#/wave-list'}
   ];
   
   /*

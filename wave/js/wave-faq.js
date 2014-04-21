@@ -4,7 +4,7 @@
 //C.2 CarouselDemoCtrl controller
 LaolinApp.controller('waveFaqCtrl',['$scope','serviceCommon',
     function ($scope,serviceCommon) {
-  serviceCommon.appConfigSet('pageTitle','FAQ');
+  serviceCommon.appConfigSet('pageTitle','首页');
 
   $scope.myInterval = 5000;
   $scope.slides = getFaq();
