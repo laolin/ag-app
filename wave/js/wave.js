@@ -9,16 +9,17 @@ LaolinApp.controller('waveListCtrl',
     
     zita:0.05//阻尼比
   };
+  
+  var dataName=[];
   function loadWave(name) {
     $scope.waveData=waveService.getWaveData(name);
     waveService.setCurrentWaveName($scope.waveName=name);
     $scope.waveName=waveService.getCurrentWaveName();
     $log.log($scope.waveObj);
-    plotWave(name);
+    $scope.plotData('wave');
     serviceCommon.appNotify("Current wave: "+$scope.waveName,5000);
   }
-  
-  function plotWave(name) {
+  /*function plotWave(name) {
     $scope.plotType='波形图';
     var dat=[];
     $scope.chartData=[];
@@ -31,46 +32,25 @@ LaolinApp.controller('waveListCtrl',
       dat=waveService.getWaveData(name).data;
       $scope.chartData.push(dat);
     }
-  }
+  }*/
   
-  $scope.plotResponU=function() {
-    $scope.plotType='相对位移反应时程';
-    $scope.chartData=[ $scope.waveObj[$scope.waveName].res.u ];
-  }
-  $scope.plotResponV=function() {
-    $scope.plotType='相对速度反应时程';
-    $scope.chartData=[ $scope.waveObj[$scope.waveName].res.v ];
-  }
-  $scope.plotResponA=function() {
-    $scope.plotType='相对加速度反应时程';
-    $scope.chartData=[ $scope.waveObj[$scope.waveName].res.a ];
-  }
-  $scope.plotResponA2=function() {
-    $scope.plotType='绝对加速度反应时程';
-    $scope.chartData=[ $scope.waveObj[$scope.waveName].res.a2 ];
-  }
-  
-  $scope.plotSpecU=function() {
-    $scope.plotType='伪位移反应谱:U';
-    $scope.chartData=[ $scope.waveObj[$scope.waveName].spec.u ];
-  }
-  $scope.plotSpecV=function() {
-    $scope.plotType='伪速度反应谱:V';
-    $scope.chartData=[ $scope.waveObj[$scope.waveName].spec.v ];
-  }
-  $scope.plotSpecA=function() {
-    $scope.plotType='伪加速度反应谱:A';
-    $scope.chartData=[ $scope.waveObj[$scope.waveName].spec.a ];
-  }
-  $scope.plotSpecA2=function() {
-    $scope.plotType='绝对加速度反应谱:A2';
-    $scope.chartData=[ $scope.waveObj[$scope.waveName].spec.a2 ];
+  //--------------
+  $scope.plotData=function(type) {
+    if('undefined'!==typeof(type)) {
+      waveService.setDataType(type);
+    }
+    o=waveService.getDataByType($scope.waveName);
+    if(!o){
+      o={disc:'无数据',data:[0]};
+    }
+    $scope.plotType=o.disc;
+    $scope.chartData=[ o.data ];
   }
   
   $scope.delResult=function() {
     delete $scope.waveObj[$scope.waveName].res;
     delete $scope.waveObj[$scope.waveName].spec;
-    plotWave($scope.waveName);
+    $scope.plotData('wave');
   }
   
   
@@ -80,7 +60,7 @@ LaolinApp.controller('waveListCtrl',
     serviceCommon.appNotify("waveAnalyse start",0,'warning');
     $scope.waveResponAnalyse();
     $scope.waveSpectrumAnalyse();
-    $scope.plotSpecA2();
+    $scope.plotData("specA2");
     serviceCommon.appNotify("waveAnalyse done",500,'success');
   }
   $scope.waveResponAnalyse=function() {
@@ -128,6 +108,15 @@ LaolinApp.controller('waveListCtrl',
         $log.log("Got data for waveName="+$scope.waveName);
       });
     }
+  };
+  
+  //MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+  //BEGIN: 导出文件功能
+  ///把xx地震波的绝对加速度反应谱下载为scr文件
+  //type: wave, resU,resV,resA,resA2, specU,specV,specA,specA2
+  $scope.dataToScr=function() {
+    
+    serviceCommon.arrayToACADPlineScrFile($scope.waveName+'.wave.scr',waveObj[$scope.waveName].data,1,1)
   }
   
   // init data -------------
@@ -139,11 +128,7 @@ LaolinApp.controller('waveListCtrl',
   }
   $scope.waveObj=waveService.getWaveObj();
   $scope.waveName=waveService.getCurrentWaveName();
-  if($scope.waveName)
-    $scope.getWaveData($scope.waveName)
-  else   
-    $scope.chartData = [[0]];
-    
+  
   $scope.chartOptions = {     
     title:'', 
     axesDefaults:{pad:1.0},
@@ -154,6 +139,8 @@ LaolinApp.controller('waveListCtrl',
         markerOptions: { show:false }
     }      
   };
+  $scope.plotData();
+
   serviceCommon.appNotify("Current wave: "+$scope.waveName,5000);
 }]);
 

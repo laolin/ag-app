@@ -1,9 +1,9 @@
 /***
 主要数据
   weveObj地震波对象，包含地震波列表，波数据，波计算结果等
-    weveObj._$waveNameList 数组，地震波名字列表
-    weveObj._$currentWaveName 当前波名
-    weveObj['其他'] 一个成员表示一条地震波，包含数据，计算结果等。
+    waveObj._$waveNameList 数组，地震波名字列表
+    waveObj._$currentWaveName 当前波名
+    waveObj['其他'] 一个成员表示一条地震波，包含数据，计算结果等。
     
 内部函数:
   init
@@ -21,10 +21,13 @@
   
   setCurrentWaveName(name)
   
+  setDataType(type) 设定要显示出来的数据：波数据或计算结果等。
+  getDataByType(name)  根据显示的设定：返回波数据或计算结果数据等。
+  
 */
 LaolinApp.service('waveService', ["$http","$log","serviceCommon",
     function ($http,$log,serviceCommon) {
-  var weveObj={};
+  var waveObj={};
   var console=$log;
   var apiScript,
     apiWave,
@@ -40,8 +43,9 @@ LaolinApp.service('waveService', ["$http","$log","serviceCommon",
     apiWave=apiScript+'?c=api&a=wave&js=JSON_CALLBACK&b=';
     apiWaveList=apiScript+'?c=api&a=wave&b=_list&js=JSON_CALLBACK';
     
-    weveObj._$waveNameList=[];
-    weveObj._$currentWaveName='';
+    waveObj._$waveNameList=[];
+    waveObj._$currentWaveName='';
+    waveObj._$dataType='wave';//用于表示当前显示出波的什么数据，详见 getDataByType
   };
   function _absMax  ( ar ){
     mx=ar[0];
@@ -58,7 +62,7 @@ LaolinApp.service('waveService', ["$http","$log","serviceCommon",
     serviceCommon.appNotify("fetchWaveList start",0,'warning');
     return $http.jsonp(apiWaveList)  
       .success(function(data){
-        weveObj._$waveNameList=data;
+        waveObj._$waveNameList=data;
         serviceCommon.appNotify("fetchWaveList success",500,'success');
       })      
       .error(function () {
@@ -70,8 +74,8 @@ LaolinApp.service('waveService', ["$http","$log","serviceCommon",
     serviceCommon.appNotify("fetchWaveData start",0,'warning');
     return $http.jsonp(apiWave+name)  
       .success(function(data){
-        weveObj[name]=data;
-        weveObj[name].absMax=_absMax(data.data);
+        waveObj[name]=data;
+        waveObj[name].absMax=_absMax(data.data);
         serviceCommon.appNotify("fetchWaveData success",500,'success');
       })      
       .error(function () {
@@ -79,38 +83,65 @@ LaolinApp.service('waveService', ["$http","$log","serviceCommon",
       });
   };
   this.getWaveList = function () {
-    return weveObj._$waveNameList;
+    return waveObj._$waveNameList;
   };
   this.getWaveObj = function () {
-    return weveObj;
+    return waveObj;
   };
   this.getWaveData = function (name) {
-    return weveObj[name];
+    return waveObj[name];
   };
   
   
   //TODO 这样是不行地，要看波名有效否，波数据在不在
   this.setCurrentWaveName = function(name) {
-    return weveObj._$currentWaveName=name;
+    return waveObj._$currentWaveName=name;
   };
   this.getCurrentWaveName = function() {
-    return weveObj._$currentWaveName;
+    return waveObj._$currentWaveName;
   };
   
+  
+  this.setDataType= function(type) {
+    waveObj._$dataType=type;
+  }
+  //获取一条波对象中的数据数组：波数据、时程反应数据、反应谱数据等
+  //type=['wave', 'resU','resV','resA','resA2', 'specU','specV','specA','specA2'];
+  this.getDataByType=function(name) {
+    type=waveObj._$dataType;
+    var wave=waveObj[name];
+    if(!wave){
+      $log.log("no data for getDataByType: "+name);
+      return false;
+    }
+    switch(type){
+      case "wave":  dat=wave.data;   disc="1波形数据";break;
+      case "resU":  dat=wave.res.u;  disc="2相对位移反应时程";break;
+      case "resV":  dat=wave.res.v;  disc="3相对速度反应时程";break;
+      case "resA":  dat=wave.res.a;  disc="4相对加速度反应时程";break;
+      case "resA2": dat=wave.res.a2; disc="5绝对加速度反应时程";break;
+      case "specU": dat=wave.spec.u; disc="6伪位移反应谱:U";break;
+      case "specV": dat=wave.spec.v; disc="7伪速度反应谱:V";break;
+      case "specA": dat=wave.spec.a; disc="8伪加速度反应谱:A";break;
+      case "specA2":dat=wave.spec.a2;disc="9绝对加速度反应谱:A2";break;
+      default:$log.log("Error type for getDataByType: "+type);return false;
+    }
+    return {data:dat,disc:disc};
+  }
   
   
   this.waveRespone = function(name) {
     var res=false;
-    if(weveObj[name] && weveObj[name]['Tn']) {
-      res=this.newmark(name,weveObj[name]['Tn']);
+    if(waveObj[name] && waveObj[name]['Tn']) {
+      res=this.newmark(name,waveObj[name]['Tn']);
     }      
     if(res) {
-      weveObj[name]['res']=res;
+      waveObj[name]['res']=res;
     }
 
   }
   this.newmark= function(name,Tn) {
-    var obj=weveObj[name];
+    var obj=waveObj[name];
     if( !obj || !obj.data) {
       $log.log('newmark error:0: nodata');
       return false;
