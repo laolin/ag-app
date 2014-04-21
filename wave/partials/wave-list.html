@@ -17,6 +17,12 @@
         
         <!-- right -->
         <div class="col-md-9">
+         <div class="cursor-pointer" ng-if="appConfig.notify">
+          <div class="alert alert-{{appConfig.notify.type}}" ng-click="appConfig.CloseNotify()">
+            {{appConfig.notify.text}}
+          </div>
+        </div>
+    
           <div class="row well">
             <span ng-show="waveName">
             
