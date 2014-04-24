@@ -115,15 +115,15 @@ LaolinApp.service('waveService', ["$http","$log","serviceCommon",
       return false;
     }
     switch(type){
-      case "wave":  dat=wave.data;   disc="1波形数据";break;
-      case "resU":  dat=wave.res.u;  disc="2相对位移反应时程";break;
-      case "resV":  dat=wave.res.v;  disc="3相对速度反应时程";break;
-      case "resA":  dat=wave.res.a;  disc="4相对加速度反应时程";break;
-      case "resA2": dat=wave.res.a2; disc="5绝对加速度反应时程";break;
-      case "specU": dat=wave.spec.u; disc="6伪位移反应谱:U";break;
-      case "specV": dat=wave.spec.v; disc="7伪速度反应谱:V";break;
-      case "specA": dat=wave.spec.a; disc="8伪加速度反应谱:A";break;
-      case "specA2":dat=wave.spec.a2;disc="9绝对加速度反应谱:A2";break;
+      case "wave":  dat=wave.data;   disc="波形数据";break;
+      case "resU":  dat=wave.res.u;  disc="相对位移反应时程";break;
+      case "resV":  dat=wave.res.v;  disc="相对速度反应时程";break;
+      case "resA":  dat=wave.res.a;  disc="相对加速度反应时程";break;
+      case "resA2": dat=wave.res.a2; disc="绝对加速度反应时程";break;
+      case "specU": dat=wave.spec.u; disc="伪位移反应谱U";break;
+      case "specV": dat=wave.spec.v; disc="伪速度反应谱V";break;
+      case "specA": dat=wave.spec.a; disc="伪加速度反应谱A";break;
+      case "specA2":dat=wave.spec.a2;disc="绝对加速度反应谱A2";break;
       default:$log.log("Error type for getDataByType: "+type);return false;
     }
     return {data:dat,disc:disc};
