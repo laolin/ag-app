@@ -112,25 +112,6 @@ LaolinApp.controller('waveListCtrl',
     }
   };
   
-  //MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
-  //BEGIN: 导出文件功能
-  ///把xx地震波的绝对加速度反应谱下载为scr文件
-  //type: wave, resU,resV,resA,resA2, specU,specV,specA,specA2
-  $scope.dataToScr=function() {
-    o=waveService.getDataByType($scope.waveName);
-    
-    if(!o){      
-      serviceCommon.appNotify("无法下载数据",0,'warning');
-      return false;
-    }
-    max = Math.max(Math.max.apply(null, o.data),
-     -Math.min.apply(null, o.data))
-    if(max<1e-6)return false;
-    sy=+(o.data.length/max/2).toPrecision(1);
-    //将就先用一下： waveObj._$dataType，以后要去掉对_$xx对象的直接使用。
-    serviceCommon.appNotify("开始下载的AutoCAD .scr文件。【注意：Y向已缩放"+sy+"倍】",0,'success');
-    serviceCommon.arrayToACADPlineScrFile($scope.waveName+"_"+$scope.waveObj._$dataType+'_sy_'+sy+'.scr',o.data,1,sy)
-  }
   
   // init data -------------
   $scope.waves=waveService.getWaveList();
@@ -155,5 +136,90 @@ LaolinApp.controller('waveListCtrl',
   $scope.plotData();
 
   serviceCommon.appNotify("Current wave: "+$scope.waveName,5000);
+  
+  
+  
+  
+  //MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+  //BEGIN: 导出文件功能
+  ///把xx地震波的绝对加速度反应谱下载为scr文件
+  //type: wave, resU,resV,resA,resA2, specU,specV,specA,specA2
+  $scope.dataToCsv=function() {
+    dataToFile('csv');
+  }
+  $scope.dataToScr=function() {
+    dataToFile('scr');
+  }
+  function dataToFile(type,fn) {
+    o=waveService.getDataByType($scope.waveName);
+    if(!o){      
+      serviceCommon.appNotify("无法下载数据",0,'warning');
+      return false;
+    }
+    max = Math.max(Math.max.apply(null, o.data),
+     -Math.min.apply(null, o.data))
+    if(max<1e-6)return false;
+    sy=+(o.data.length/max/2).toPrecision(1);
+    //将就先用一下： waveObj._$dataType，以后要去掉对_$xx对象的直接使用。
+    
+    if(type=='scr') {
+      fn=serviceCommon.arrayToACADPlineScrFile;
+      serviceCommon.appNotify("开始下载为 AutoCAD .scr文件。【注意：Y向已缩放"+sy+"倍】",0,'success');
+    } else /*if(type=='csv')*/ {
+      fn=serviceCommon.arrayToCsvFile;
+      serviceCommon.appNotify("开始下载为 Excel .csv文件。",0,'success');
+    }
+    fn($scope.waveName+"_"+$scope.waveObj._$dataType+'_sy_'+sy+'.'+type,o.data,1,sy)
+  } 
+   
+  ///把多条地震波的绝对加速度反应谱 的 平均值 下载为scr文件
+  /* 用法示例：
+  a2AverageScr([
+  'SHW1-AWX0.9-1.txt',
+  'SHW2-AWX0.9-2.txt',
+  'SHW3-NRX0.9-3.txt',
+  'SHW4-NRX0.9-4.txt',
+  'SHW5-NRX0.9-5.txt',
+  'SHW6-NRX0.9-6.txt',
+  'SHW7-NRX0.9-7.txt'
+  ],'SHW1x~7x.avg');
+  * /
+  function a2AverageScr(arrays,fname){
+    an=arrays.length;
+    a2s=[];
+    for(var a=0;a<an;a++){
+      a2s.push(waveData[arrays[a]].spec.a2);
+    }
+    av=arraysAverage(a2s);
+    arrayToPlineAutoCADScrFile(fname+'.scr',av,1,1);
+  }
+   
+   
+  ///以下两个函数用于求平均反应谱
+  ///对多个数组，各个元素各自求和形成新数组
+  ///@para: fact :放大系数
+  function arraysSum(arrays,fact){
+    an=arrays.length;
+    n=arrays[0].length;
+    s=new Array(n);
+    for(var i=0;i<n;i++){
+      sum=0;
+      for(var a=0;a<an;a++){
+        if(isFinite(arrays[a][i])){
+          sum=sum+parseFloat(arrays[a][i]);
+        }
+      }
+      s[i]=sum*fact;
+    }
+    return s;
+  } 
+  ///对多个数组，各个元素各自求平均值形成新数组
+  function arraysAverage(arrays){
+    return arraysSum(arrays,1/arrays.length);
+  } 
+  */
+  //WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  //END: 导出文件功能
+  
 }]);
 

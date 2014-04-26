@@ -34,9 +34,14 @@
             <div class="box-chart text-center" ui-chart="chartData" chart-options="chartOptions"></div>
           
             <span ng-show="waveName">
-            <b class="label label-info">{{plotType}} </b>
-            <a href="" ng-click="dataToScr()" ng-if="plotType">下载为AutoCAD .src命令流文件</a>
-            <a href="" ng-click="" ng-if="plotType">下载为Excel .csv文件</a
+            当时显示：<b class="label label-success">{{plotType}} </b>&nbsp;
+            
+              <button type="button" class="btn btn-xs btn-primary" ng-click="dataToCsv()"
+                popover-title="把显示的数据下载为文件" popover="下载为Excel的.csv格式数据文件，方便利用Excel的强大数据处理功能。" popover-trigger="mouseenter">
+              <span class="glyphicon glyphicon-download-alt"></span>下载为.CSV文件</button>
+              <button type="button" class="btn btn-xs btn-primary"  ng-click="dataToScr()"
+              popover-title="把显示的数据下载为文件" popover="下载为AutoCAD的.SCR格式命令流文件，方便利用AutoCAD的强大图形编辑功能。" popover-trigger="mouseenter">
+              <span class="glyphicon glyphicon-download-alt"></span>下载为.SRC文件</button>
             </span>
           </div>
           <div class="row" ng-show="waveName">

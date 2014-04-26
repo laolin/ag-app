@@ -102,7 +102,7 @@ LaolinApp.service('serviceCommon',["$http","$log","$interval",
   //（以0,1,2...为X坐标，数组值为Y坐标）
   this.arrayToCsvFile=function (fname,array_y){
     data=[];
-    xyo=arrayToXyo(array_y);  
+    xyo=arrayToXyObj(array_y);  
     xy=xyo.xy;
     data[0]='length,min, min_at, max, max_at\r\n';
     data[1]=''+array_y.length+','+xyo.min+','+xyo.min_at+','+xyo.max+','+xyo.max_at+'\r\n';
