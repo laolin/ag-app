@@ -1,8 +1,8 @@
 /**
 tplLoad(tpl,selector):加载模板到selector中
 */
-LaolinApp.service('serviceCommon',["$http","$log","$interval",
-    function ($http,$log,$interval) {
+LaolinApp.service('serviceCommon',["$http","$log","$interval","notify",
+    function ($http,$log,$interval,notify) {
   var tplHtml=[];
   function tplFetch(tpl) {
     $log.log("fetchTpl START: "+tpl);
@@ -33,22 +33,32 @@ LaolinApp.service('serviceCommon',["$http","$log","$interval",
   this.appConfigSet=function(k,v) {
     return appConfig[k]=v;
   }
-  appConfig.CloseNotify=function() {
-      //delete appConfig.notify;
-      appConfig.notify={text:'Ready.',type:'info'}
-  }
+  /* 使用【angular-notify】模块显示通知
+    delay:显示时间，默认300毫秒，0或-1=999秒，负数会表示清除旧的通知
+    type:'warning' | 'danger' | 'success' | 'normal'
+  */
   this.appNotify=function(text  ,delay,type) {
-    if('undefined'==typeof(delay))delay=0;
-    if('undefined'==typeof(type))type='info';
-    if(appConfig.notify.timer) {
-      $interval.cancel(appConfig.notify.timer);
-      appConfig.notify.timer=0;
+    if('undefined'==typeof(delay))delay=1000;
+    if('undefined'==typeof(type))type='';
+    
+    if(delay==0)delay=999000;
+    if(delay==-1)delay=-999000;
+    if(delay<0){
+      delay=-delay;
+      notify.closeAll();
     }
-    if(delay>0){
-      appConfig.notify.timer=$interval(appConfig.CloseNotify,delay,1);
-    }
-    appConfig.notify.text=text;
-    appConfig.notify.type=type;
+    notify.config({duration: delay});
+    
+    if(type=='warning')tpl='partials/tpl-notity-warning.html';
+    else if(type=='danger')tpl='partials/tpl-notity-danger.html';
+    else if(type=='success')tpl='partials/tpl-notity-success.html';
+    else tpl='partials/tpl-notity-normal.html';
+    
+    pos= (type=='info')?'center':'right';
+    notify({message:text,
+        duration: delay,//这个没效用
+        template:tpl
+    });
   }
   //END: app config
   //WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW

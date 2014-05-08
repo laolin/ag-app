@@ -17,7 +17,6 @@ LaolinApp.controller('waveListCtrl',
     $scope.waveName=waveService.getCurrentWaveName();
     $log.log($scope.waveObj);
     $scope.plotData('wave');
-    serviceCommon.appNotify("Current wave: "+$scope.waveName,5000);
   }
   /*function plotWave(name) {
     $scope.plotType='波形图';
@@ -42,6 +41,10 @@ LaolinApp.controller('waveListCtrl',
     o=waveService.getDataByType($scope.waveName);
     if(!o){
       o={disc:'无数据',data:[0]};
+      serviceCommon.appNotify('请先点击地震波加载数据',0,'warning');
+      
+    } else {
+      serviceCommon.appNotify('已显示:'+o.disc,-1000);
     }
     $scope.plotType=o.disc;
     $scope.chartData=[ o.data ];
@@ -61,7 +64,7 @@ LaolinApp.controller('waveListCtrl',
     $scope.waveResponAnalyse();
     $scope.waveSpectrumAnalyse();
     $scope.plotData("specA2");
-    serviceCommon.appNotify("waveAnalyse done",500,'success');
+    serviceCommon.appNotify("waveAnalyse done",-500,'success');
   }
   $scope.waveResponAnalyse=function() {
     waveService.waveRespone($scope.waveName);
@@ -135,7 +138,6 @@ LaolinApp.controller('waveListCtrl',
   };
   $scope.plotData();
 
-  serviceCommon.appNotify("Current wave: "+$scope.waveName,5000);
   
   
   
@@ -164,10 +166,10 @@ LaolinApp.controller('waveListCtrl',
     
     if(type=='scr') {
       fn=serviceCommon.arrayToACADPlineScrFile;
-      serviceCommon.appNotify("开始下载为 AutoCAD .scr文件。【注意：Y向已缩放"+sy+"倍】",0,'success');
+      serviceCommon.appNotify("开始下载为 AutoCAD .scr文件。【注意：Y向已缩放"+sy+"倍】",6000,'success');
     } else /*if(type=='csv')*/ {
       fn=serviceCommon.arrayToCsvFile;
-      serviceCommon.appNotify("开始下载为 Excel .csv文件。",0,'success');
+      serviceCommon.appNotify("开始下载为 Excel .csv文件。",6000,'success');
     }
     fn($scope.waveName+"_"+$scope.waveObj._$dataType+'_sy_'+sy+'.'+type,o.data,1,sy)
   } 
