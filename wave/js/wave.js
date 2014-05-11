@@ -41,10 +41,10 @@ LaolinApp.controller('waveListCtrl',
     o=waveService.getDataByType($scope.waveName);
     if(!o){
       o={disc:'无数据',data:[0]};
-      serviceCommon.appNotify('请先点击地震波加载数据',0,'warning');
+      serviceCommon.appNotify('请先点击地震波加载数据',0);
       
     } else {
-      serviceCommon.appNotify('已显示:'+$scope.waveName+'的'+o.disc,-5000);
+      serviceCommon.appNotify('显示【'+$scope.waveName+'】的'+o.disc,-4000);
     }
     $scope.plotType=o.disc;
     $scope.chartData=[ o.data ];
@@ -121,7 +121,6 @@ LaolinApp.controller('waveListCtrl',
   if($scope.waves.length==0){
     waveService.fetchWaveList().then(function(data){
       $scope.waves=waveService.getWaveList();
-      $scope.plotData();//这里还没有数据，主要就是为了显示一下提示消息
     });
   }
   $scope.waveObj=waveService.getWaveObj();

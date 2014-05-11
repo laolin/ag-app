@@ -5,7 +5,7 @@
 LaolinApp.controller('waveFaqCtrl',['$scope','serviceCommon',
     function ($scope,serviceCommon) {
   serviceCommon.appConfigSet('pageTitle','首页');
-
+  serviceCommon.appNotify("欢迎使用LaoLin的地震波分析工具",-4000);
   $scope.myInterval = 5000;
   $scope.slides = getFaq();
   //style: LaolinApp.data.styles[slides.length%LaolinApp.data.styles.length],

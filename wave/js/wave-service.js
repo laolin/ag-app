@@ -59,27 +59,27 @@ LaolinApp.service('waveService', ["$http","$log","serviceCommon",
   
   //外部函数
   this.fetchWaveList = function() {
-    serviceCommon.appNotify("fetchWaveList start",0,'warning');
+    serviceCommon.appNotify("正在获取地震波列表...",2000,'warning');
     return $http.jsonp(apiWaveList)  
       .success(function(data){
         waveObj._$waveNameList=data;
-        serviceCommon.appNotify("fetchWaveList success",-3000,'success');
+        serviceCommon.appNotify("获取地震波列表完成",2000,'success');
       })      
       .error(function () {
-        serviceCommon.appNotify('fetchWaveList error',-1,'danger')
+        serviceCommon.appNotify('获取地震波列表失败',0,'danger')
       });
   };
   //TODO: name不存在的情况
   this.fetchWaveData = function(name) {
-    serviceCommon.appNotify("fetchWaveData start",0,'warning');
+    serviceCommon.appNotify("正在获取地震波数据...",2000,'warning');
     return $http.jsonp(apiWave+name)  
       .success(function(data){
         waveObj[name]=data;
         waveObj[name].absMax=_absMax(data.data);
-        serviceCommon.appNotify("fetchWaveData success",-1000,'success');
+        serviceCommon.appNotify("获取地震波数据完成",2000,'success');
       })      
       .error(function () {
-        serviceCommon.appNotify('fetchWaveData error',-1,'danger')
+        serviceCommon.appNotify('获取地震波数据失败',0,'danger')
       });
   };
   this.getWaveList = function () {

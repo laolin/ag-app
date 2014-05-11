@@ -33,12 +33,16 @@ LaolinApp.service('serviceCommon',["$http","$log","$interval","notify",
   this.appConfigSet=function(k,v) {
     return appConfig[k]=v;
   }
+  //END: app config
+  //WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  
   /* 使用【angular-notify】模块显示通知
-    delay:显示时间，默认300毫秒，0或-1=999秒，负数会表示清除旧的通知
+    delay:显示时间，默认4000毫秒，0或-1=999秒，负数会表示清除旧的通知
     type:'warning' | 'danger' | 'success' | 'normal'
   */
   this.appNotify=function(text  ,delay,type) {
-    if('undefined'==typeof(delay))delay=1000;
+    if('undefined'==typeof(text)||text==''){return notify.closeAll();}
+    if('undefined'==typeof(delay))delay=4000;
     if('undefined'==typeof(type))type='';
     
     if(delay==0)delay=-999000;
@@ -47,7 +51,6 @@ LaolinApp.service('serviceCommon',["$http","$log","$interval","notify",
       delay=-delay;
       notify.closeAll();
     }
-    //notify.config({duration: delay});
     
     if(type=='warning')tpl='partials/tpl-notity-warning.html';
     else if(type=='danger')tpl='partials/tpl-notity-danger.html';
@@ -56,12 +59,10 @@ LaolinApp.service('serviceCommon',["$http","$log","$interval","notify",
     
     pos= (type=='info')?'center':'right';
     notify({message:text,
-        duration: delay,//这个没效用
+        duration: delay,
         template:tpl
     });
   }
-  //END: app config
-  //WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
   
   
   //MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
