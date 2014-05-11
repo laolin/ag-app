@@ -41,13 +41,13 @@ LaolinApp.service('serviceCommon',["$http","$log","$interval","notify",
     if('undefined'==typeof(delay))delay=1000;
     if('undefined'==typeof(type))type='';
     
-    if(delay==0)delay=999000;
+    if(delay==0)delay=-999000;
     if(delay==-1)delay=-999000;
-    if(delay<0){
+    if(delay<=0){
       delay=-delay;
       notify.closeAll();
     }
-    notify.config({duration: delay});
+    //notify.config({duration: delay});
     
     if(type=='warning')tpl='partials/tpl-notity-warning.html';
     else if(type=='danger')tpl='partials/tpl-notity-danger.html';

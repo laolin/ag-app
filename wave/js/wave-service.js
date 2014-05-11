@@ -59,11 +59,11 @@ LaolinApp.service('waveService', ["$http","$log","serviceCommon",
   
   //外部函数
   this.fetchWaveList = function() {
-    //serviceCommon.appNotify("fetchWaveList start",0,'warning');
+    serviceCommon.appNotify("fetchWaveList start",0,'warning');
     return $http.jsonp(apiWaveList)  
       .success(function(data){
         waveObj._$waveNameList=data;
-        //serviceCommon.appNotify("fetchWaveList success",-500,'success');
+        serviceCommon.appNotify("fetchWaveList success",-3000,'success');
       })      
       .error(function () {
         serviceCommon.appNotify('fetchWaveList error',-1,'danger')
@@ -76,7 +76,7 @@ LaolinApp.service('waveService', ["$http","$log","serviceCommon",
       .success(function(data){
         waveObj[name]=data;
         waveObj[name].absMax=_absMax(data.data);
-        serviceCommon.appNotify("fetchWaveData success",-300,'success');
+        serviceCommon.appNotify("fetchWaveData success",-1000,'success');
       })      
       .error(function () {
         serviceCommon.appNotify('fetchWaveData error',-1,'danger')

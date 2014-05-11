@@ -44,7 +44,7 @@ LaolinApp.controller('waveListCtrl',
       serviceCommon.appNotify('请先点击地震波加载数据',0,'warning');
       
     } else {
-      serviceCommon.appNotify('已显示:'+o.disc,-1000);
+      serviceCommon.appNotify('已显示:'+$scope.waveName+'的'+o.disc,-5000);
     }
     $scope.plotType=o.disc;
     $scope.chartData=[ o.data ];
@@ -60,11 +60,11 @@ LaolinApp.controller('waveListCtrl',
   
   
   $scope.waveAnalyse=function() {
-    serviceCommon.appNotify("waveAnalyse start",0,'warning');
+    //serviceCommon.appNotify("waveAnalyse start",0,'warning');
     $scope.waveResponAnalyse();
     $scope.waveSpectrumAnalyse();
     $scope.plotData("specA2");
-    serviceCommon.appNotify("waveAnalyse done",-500,'success');
+    //serviceCommon.appNotify("waveAnalyse done",-500,'success');
   }
   $scope.waveResponAnalyse=function() {
     waveService.waveRespone($scope.waveName);
@@ -121,6 +121,7 @@ LaolinApp.controller('waveListCtrl',
   if($scope.waves.length==0){
     waveService.fetchWaveList().then(function(data){
       $scope.waves=waveService.getWaveList();
+      $scope.plotData();//这里还没有数据，主要就是为了显示一下提示消息
     });
   }
   $scope.waveObj=waveService.getWaveObj();
@@ -155,7 +156,7 @@ LaolinApp.controller('waveListCtrl',
   function dataToFile(type,fn) {
     o=waveService.getDataByType($scope.waveName);
     if(!o){      
-      serviceCommon.appNotify("无法下载数据",0,'warning');
+      serviceCommon.appNotify("无法下载数据",6000,'warning');
       return false;
     }
     max = Math.max(Math.max.apply(null, o.data),
