@@ -18,6 +18,7 @@ angular.module('cgNotify', []).factory('notify',['$timeout','$http','$compile','
 			args.template = args.template ? args.template : defaultTemplate;
 			args.position = args.position ? args.position : position;
 			args.container = args.container ? args.container : document.body;
+			args.duration = args.duration ? args.duration : duration;
 
 			$http.get(args.template,{cache: $templateCache}).success(function(template){
 
@@ -65,10 +66,10 @@ angular.module('cgNotify', []).factory('notify',['$timeout','$http','$compile','
 					layoutMessages();
 				});
 
-				if (duration > 0){
+				if (args.duration > 0){
 					$timeout(function(){
 						scope.$close();
-					},duration);
+					},args.duration);
 				}
 
 			}).error(function(data){
