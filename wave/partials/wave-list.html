@@ -63,10 +63,11 @@
                   <div>
                   反应谱分析：调整后的峰值<span class='label label-success'>{{waveObj[waveName]['newMax']}}</span>
                   阻尼比<span class='label label-success'>{{waveObj[waveName]['zita']}}</span>
-                  <button class="btn btn-info" ng-click="plotData('specU')">  伪位移反应谱:U </button>
-                  <button class="btn btn-info" ng-click="plotData('specV')">  伪速度反应谱:V </button>
-                  <button class="btn btn-info" ng-click="plotData('specA')">  伪加速度反应谱:A </button>
-                  <button class="btn btn-info" ng-click="plotData('specA2')">  绝对加速度反应谱:A2 </button>
+                  <button class="btn btn-info" ng-click="plotData('specU')">  伪位移:U </button>
+                  <button class="btn btn-info" ng-click="plotData('specV')">  伪速度:V </button>
+                  <button class="btn btn-info" ng-click="plotData('specA')">  伪加速度:A </button>
+                  <button class="btn btn-info" ng-click="plotData('specA2')">  绝对加速度:A2 </button>
+                  <button class="btn btn-danger" ng-click="delResult()">删除结果</button>
                   </div>
               </tab>
             </tabset>
