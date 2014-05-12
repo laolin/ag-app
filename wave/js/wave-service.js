@@ -22,6 +22,7 @@
   setCurrentWaveName(name)
   
   setDataType(type) 设定要显示出来的数据：波数据或计算结果等。
+  getDataType() 得到当时显示出来的数据类型：波数据或计算结果等。
   getDataByType(name)  根据显示的设定：返回波数据或计算结果数据等。
   
 */
@@ -105,6 +106,13 @@ LaolinApp.service('waveService', ["$http","$log","serviceCommon",
   this.setDataType= function(type) {
     waveObj._$dataType=type;
   }
+  this.getDataType= function() {
+    return {
+    res:(waveObj._$dataType.substr(0,3)=='res'),
+    spec:(waveObj._$dataType.substr(0,4)=='spec'),
+    wave:(waveObj._$dataType=='wave')
+    };
+  }
   //获取一条波对象中的数据数组：波数据、时程反应数据、反应谱数据等
   //type=['wave', 'resU','resV','resA','resA2', 'specU','specV','specA','specA2'];
   this.getDataByType=function(name) {
@@ -114,19 +122,24 @@ LaolinApp.service('waveService', ["$http","$log","serviceCommon",
       $log.log("no data for getDataByType: "+name);
       return false;
     }
-    switch(type){
-      case "wave":  dat=wave.data;   disc="波形数据";break;
-      case "resU":  dat=wave.res.u;  disc="相对位移反应时程";break;
-      case "resV":  dat=wave.res.v;  disc="相对速度反应时程";break;
-      case "resA":  dat=wave.res.a;  disc="相对加速度反应时程";break;
-      case "resA2": dat=wave.res.a2; disc="绝对加速度反应时程";break;
-      case "specU": dat=wave.spec.u; disc="伪位移反应谱U";break;
-      case "specV": dat=wave.spec.v; disc="伪速度反应谱V";break;
-      case "specA": dat=wave.spec.a; disc="伪加速度反应谱A";break;
-      case "specA2":dat=wave.spec.a2;disc="绝对加速度反应谱A2";break;
-      default:$log.log("Error type for getDataByType: "+type);return false;
+    if(!wave.res){
+      waveObj._$dataType=type='wave';
+      dat=wave.data;   disc="波形数据";
+    } else {
+      switch(type){
+        case "wave":  dat=wave.data;   disc="波形数据";break;
+        case "resU":  dat=wave.res.u;  disc="相对位移反应时程";break;
+        case "resV":  dat=wave.res.v;  disc="相对速度反应时程";break;
+        case "resA":  dat=wave.res.a;  disc="相对加速度反应时程";break;
+        case "resA2": dat=wave.res.a2; disc="绝对加速度反应时程";break;
+        case "specU": dat=wave.spec.u; disc="伪位移反应谱U";break;
+        case "specV": dat=wave.spec.v; disc="伪速度反应谱V";break;
+        case "specA": dat=wave.spec.a; disc="伪加速度反应谱A";break;
+        case "specA2":dat=wave.spec.a2;disc="绝对加速度反应谱A2";break;
+        default:$log.log("Error type for getDataByType: "+type);return false;
+      }
     }
-    return {data:dat,disc:disc};
+    return {data:dat,disc:disc,type:type};
   }
   
   

@@ -16,23 +16,8 @@ LaolinApp.controller('waveListCtrl',
     waveService.setCurrentWaveName($scope.waveName=name);
     $scope.waveName=waveService.getCurrentWaveName();
     $log.log($scope.waveObj);
-    $scope.plotData('wave');
+    $scope.plotData();
   }
-  /*function plotWave(name) {
-    $scope.plotType='波形图';
-    var dat=[];
-    $scope.chartData=[];
-    if(Array.isArray(name)) {
-      name.forEach(function(i){
-      dat=waveService.getWaveData(i).data;
-      $scope.chartData.push(dat);
-      });
-    } else {
-      dat=waveService.getWaveData(name).data;
-      $scope.chartData.push(dat);
-    }
-  }*/
-  
   //--------------
   $scope.plotData=function(type) {
     if('undefined'!==typeof(type)) {
@@ -41,12 +26,13 @@ LaolinApp.controller('waveListCtrl',
     o=waveService.getDataByType($scope.waveName);
     if(!o){
       o={disc:'无数据',data:[0]};
-      serviceCommon.appNotify('请先点击地震波加载数据',0);
+      serviceCommon.appNotify('请点击地震波加载数据',0);
       
     } else {
       serviceCommon.appNotify('显示【'+$scope.waveName+'】的'+o.disc,-4000);
     }
-    $scope.plotType=o.disc;
+    $scope.plotType= waveService.getDataType();
+    $scope.plotDisc=o.disc;
     $scope.chartData=[ o.data ];
   }
   
@@ -125,7 +111,8 @@ LaolinApp.controller('waveListCtrl',
   }
   $scope.waveObj=waveService.getWaveObj();
   $scope.waveName=waveService.getCurrentWaveName();
-  
+  $scope.plotType=waveService.getDataType();
+
   $scope.chartOptions = {     
     title:'', 
     axesDefaults:{pad:1.0},
@@ -136,7 +123,7 @@ LaolinApp.controller('waveListCtrl',
         markerOptions: { show:false }
     }      
   };
-  $scope.plotData();
+  //$scope.plotData();//由于在tab的select里会调用plotData，所以不要重复调用了。
 
   
   
