@@ -10,7 +10,6 @@ LaolinApp.controller('waveListCtrl',
     zita:0.05//阻尼比
   };
   
-  var dataName=[];
   function loadWave(name) {
     $scope.waveData=waveService.getWaveData(name);
     waveService.setCurrentWaveName($scope.waveName=name);
@@ -100,6 +99,32 @@ LaolinApp.controller('waveListCtrl',
       });
     }
   };
+  $scope.searchWaveType=0;//0:all, 1:loaded, 2:analysed
+  $scope.setSearchWaveType= function (n) {
+    $scope.searchWaveType=n;
+    $log.log('searchWaveType='+n);
+  }
+  $scope.getWaveTypeSearched= function (n) {
+    //统计波条数信息：
+    //[0]=共有多少条波
+    //[1]=共有多少条波已加载
+    //[2]=共有多少条波已计算
+    if(n==0)return $scope.waves.length;
+    if(n!=1 && n!=2)return 0;
+    a=0;
+    $scope.waves.forEach(function(name) {
+      a+= n==1 ?
+      ($scope.waveObj[name]&&$scope.waveObj[name].data?1:0) :
+      ($scope.waveObj[name]&&$scope.waveObj[name].res?1:0);
+    })
+    return a;
+  }
+    
+  $scope.listWaveFilter= function (act){
+    if($scope.searchWaveType==1 && !$scope.waveObj[act])return false;
+    if($scope.searchWaveType==2 && (!$scope.waveObj[act] || !$scope.waveObj[act]['res']) )return false;
+    return true;
+   }
   
   
   // init data -------------

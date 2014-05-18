@@ -1,10 +1,32 @@
     <div class="container marketing">
       <div class="row">
+            <tabset>
+              <tab heading="全部地震波({{getWaveTypeSearched(0)}})"
+              select="setSearchWaveType(0)"></tab>
+              <tab heading="已加载({{getWaveTypeSearched(1)}})" 
+              select="setSearchWaveType(1)"></tab>
+              <tab heading="已计算({{getWaveTypeSearched(2)}})" 
+              select="setSearchWaveType(2)">
+              </tab>
+            </tabset>
+      </div>
+      <div class="row">
         <!-- left: -->
         <div class="col-xs-3 box-wave-list">
+        
+        <div class="input-group">
+          <span class="input-group-addon">过滤</span>
+          <input type="text" class="form-control" ng-model="searchWaveName">
+          <span class="input-group-btn">
+            <button class="btn btn-default" type="button" ng-click="searchWaveName=''">X</button>
+          </span>
+        </div><!-- /input-group -->
+    
+          
           <div class="list-group">
-            <a class="list-group-item" ng-repeat="(key,wave) in waves"
-            id="btn-wave-id-{{key}}" 
+            <a class="list-group-item" ng-repeat="wave in waves 
+            | filter: searchWaveName | filter: listWaveFilter "
+            id="btn-wave-id-{{$index}}" 
             ng-class="{active:waveName==wave}"
             ng-click="getWaveData( wave )">
               {{wave}}
