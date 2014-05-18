@@ -4,10 +4,11 @@
               <tab heading="全部地震波({{getWaveTypeSearched(0)}})"
               select="setSearchWaveType(0)"></tab>
               <tab heading="已加载({{getWaveTypeSearched(1)}})" 
-              select="setSearchWaveType(1)"></tab>
+              select="setSearchWaveType(1)" 
+              disabled="getWaveTypeSearched(1)==0"></tab>
               <tab heading="已计算({{getWaveTypeSearched(2)}})" 
-              select="setSearchWaveType(2)">
-              </tab>
+              select="setSearchWaveType(2)"
+              disabled="getWaveTypeSearched(2)==0"></tab>
             </tabset>
       </div>
       <div class="row">
