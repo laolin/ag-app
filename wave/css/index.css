@@ -37,6 +37,25 @@ body {
   
 }
 
+/* 定义一个小的，可用来作状态栏等 */
+.carousel-40 {
+  height: 42px;
+  margin-top: -0px;
+  margin-bottom: 0px;
+}
+.carousel-40 .item {
+  height: 42px;
+}
+.carousel-40 .carousel-indicators {
+  display:none;
+}
+.carousel-40  .icon-prev, 
+.carousel-40  .icon-next, 
+.carousel-40  .glyphicon-chevron-left, 
+.carousel-40  .glyphicon-chevron-right {
+  top: 13px;
+}
+
 
 .metbox-blue {
   background-color: #2e8bcc;
@@ -206,4 +225,8 @@ body {
   padding:2px 8px 2px 8px;
   border:1px solid #999;
   font-size: 120%;
+}
+
+.status-box {
+  height:42px;
 }

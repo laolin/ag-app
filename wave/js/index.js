@@ -1,6 +1,6 @@
 //copyright 2004 LaoLin
 ;
-var LaolinApp = angular.module('LaolinApp', ['cgNotify','ui.bootstrap','ngRoute','ui.chart']);
+var LaolinApp = angular.module('LaolinApp', ['cgNotify','ui.bootstrap','ngTouch','ngRoute','ui.chart']);
 
 //A.1 通用数据
 LaolinApp.data={};

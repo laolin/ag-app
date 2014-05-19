@@ -1,5 +1,6 @@
     <div class="container marketing">
       <div class="row">
+        <div class="pull-left">
             <tabset>
               <tab heading="全部地震波({{getWaveTypeSearched(0)}})"
               select="setSearchWaveType(0)"></tab>
@@ -9,7 +10,8 @@
               <tab heading="已计算({{getWaveTypeSearched(2)}})" 
               select="setSearchWaveType(2)"
               disabled="getWaveTypeSearched(2)==0"></tab>
-            </tabset>
+           </tabset>
+        </div>
       </div>
       <div class="row">
         <!-- left: -->
@@ -118,4 +120,5 @@
           
         </div> <!-- END right -->
       </div>
+      
    </div>

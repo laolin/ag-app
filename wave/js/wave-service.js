@@ -44,6 +44,7 @@ LaolinApp.service('waveService', ["$http","$log","serviceCommon",
     apiWave=apiScript+'?c=api&a=wave&js=JSON_CALLBACK&b=';
     apiWaveList=apiScript+'?c=api&a=wave&b=_list&js=JSON_CALLBACK';
     
+    LaolinApp.data.waveObj=waveObj;
     waveObj._$waveNameList=[];
     waveObj._$currentWaveName='';
     waveObj._$dataType='wave';//用于表示当前显示出波的什么数据，详见 getDataByType
