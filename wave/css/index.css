@@ -200,7 +200,7 @@ body {
   cursor:pointer;
 }
 .box-wave-list {
-  max-height:500px;
+  max-height:475px;
   overflow-y:auto;
   cursor:pointer;
   text-align:left;
