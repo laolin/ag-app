@@ -1,52 +1,93 @@
     <div class="container marketing">
       <div class="row">
-        <div class="pull-left">
-            <tabset>
-              <tab heading="全部地震波({{getWaveTypeSearched(0)}})"
-              select="setSearchWaveType(0)"></tab>
-              <tab heading="已加载({{getWaveTypeSearched(1)}})" 
-              select="setSearchWaveType(1)" 
-              disabled="getWaveTypeSearched(1)==0"></tab>
-              <tab heading="已计算({{getWaveTypeSearched(2)}})" 
-              select="setSearchWaveType(2)"
-              disabled="getWaveTypeSearched(2)==0"></tab>
-           </tabset>
-        </div>
+        
       </div>
       <div class="row">
         <!-- left: -->
-        <div class="col-xs-3 box-wave-list">
-        
-        <div class="input-group">
-          <span class="input-group-addon">过滤</span>
-          <input type="text" class="form-control" ng-model="searchWaveName">
-          <span class="input-group-btn">
-            <button class="btn btn-default" type="button" ng-click="searchWaveName=''">X</button>
-          </span>
-        </div><!-- /input-group -->
-    
-          
-          <div class="list-group">
-            <a class="list-group-item" ng-repeat="wave in waves 
-            | filter: searchWaveName | filter: listWaveFilter "
-            id="btn-wave-id-{{$index}}" 
-            ng-class="{active:waveName==wave}"
-            ng-click="getWaveData( wave )">
-              {{wave}}
-              <span class="badge" ng-if="waveObj[wave]">
-              <b ng-if="waveObj[wave]['res']">A,</b>L</span>
-            </a>
+        <div class="col-xs-3">
+          <div class="row">
+              <tabset>
+                <tab heading="地震波({{getWaveTypeSearched(0)}})"
+                title="可选地震波 {{getWaveTypeSearched(0)}} 条"
+                select="setSearchWaveType(0)"></tab>
+                <tab heading="L({{getWaveTypeSearched(1)}})" 
+                title="已加载地震波 {{getWaveTypeSearched(1)}} 条"
+                select="setSearchWaveType(1)" 
+                disabled="getWaveTypeSearched(1)==0"></tab>
+                <tab heading="A({{getWaveTypeSearched(2)}})" 
+                title="已计算地震波 {{getWaveTypeSearched(2)}} 条"
+                select="setSearchWaveType(2)"
+                disabled="getWaveTypeSearched(2)==0"></tab>
+             </tabset>
+             
+            <div class="input-group">
+              <span class="input-group-addon">过滤</span>
+              <input type="text" class="form-control" ng-model="searchWaveName">
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="button" ng-click="searchWaveName=''">X</button>
+              </span>
+            </div><!-- /input-group -->
           </div>
-
+          <div class="row box-wave-list">
+            <div class="list-group">
+              <a class="list-group-item" ng-repeat="wave in waves 
+              | filter: searchWaveName | filter: listWaveFilter "
+              id="btn-wave-id-{{$index}}" 
+              ng-class="{active:waveName==wave}"
+              ng-click="getWaveData( wave )">
+                {{wave}}
+                <span class="badge" ng-if="waveObj[wave]">
+                <b ng-if="waveObj[wave]['res']">A,</b>L</span>
+              </a>
+            </div>
+          </div>
         </div><!-- end left -->
         
         <!-- right -->
         <div class="col-xs-9">
-            <tabset>
-              <tab heading="波数据" select="plotData('wave')" 
-                active="plotType.wave"
-                disabled=" !waveName  ">
-                <div class="input-group respon-run" ng-hide="!waveName || waveObj[waveName]['res']">
+            
+          <div class="row">
+          
+            <div class="pull-right" ng-show="waveName">
+            当时显示：<b class="label label-success">{{plotDisc}} </b>&nbsp;
+            
+              <button type="button" class="btn btn-primary" ng-click="dataToCsv()"
+              popover-placement="bottom"
+              popover-title="下载数据文件" popover="下载为Excel的.csv格式数据文件，方便利用Excel的强大数据处理功能。" popover-trigger="mouseenter">
+              <span class="glyphicon glyphicon-download-alt"></span>下载为.CSV文件</button>
+              <button type="button" class="btn btn-primary"  ng-click="dataToScr()"
+              popover-placement="bottom"
+              popover-title="下载数据文件" popover="下载为AutoCAD的.SCR格式命令流文件，方便利用AutoCAD的强大图形编辑功能。" popover-trigger="mouseenter">
+              <span class="glyphicon glyphicon-download-alt"></span>下载为.SRC文件</button>
+            </div>
+            <div class="">
+              <tabset>
+                  <tab heading="波数据" select="plotData('wave')" 
+                    active="plotType.wave"
+                    disabled=" !waveName  ">
+                  </tab>
+                  <tab heading="时程分析结果"  select="plotData('resA2')" 
+                    active="plotType.res" 
+                    disabled=" !waveName || !waveObj[waveName].res">
+                  </tab>
+                  <tab heading="反应谱结果"   select="plotData('specA2')" 
+                    active="plotType.spec" 
+                    disabled="waveName==''||!waveObj[waveName].spec">
+                  </tab>
+                </tabset>
+            </div>
+                        
+            <div class="box-chart text-center" ui-chart="chartData" chart-options="chartOptions"></div>
+          
+          <!-- 1 -->
+             <div ng-show="waveName && plotType.wave">
+             
+                    地震波 <b class="label label-success">{{waveName}} </b>
+                    峰值<b class="label label-success">{{ waveObj[waveName]['absMax'] }}</b>
+                    点数<b class="label label-success">{{ waveObj[waveName]['count'] }}</b>
+                    时间间隔<b class="label label-success">{{ waveObj[waveName]['dt'] }}</b>
+                    
+                <div class="input-group respon-run" ng-show="!waveObj[waveName]['res']">
                   <span class="input-group-addon">调整地震波峰值:</span>
                   <input type="text" name="newMax" ng-model="waveData.newMax" value="" class="form-control">
                   <span class="input-group-addon">阻尼比:</span>
@@ -59,19 +100,12 @@
                       <button class="btn btn-primary " ng-click="waveAnalyse()"> 地震波分析 </button>
                   </div>
                 </div>
-                <div ng-show="waveObj[waveName]['res']">  
                 
-            地震波 <b class="label label-success">{{waveName}} </b>,
-            点数<b class="label label-success">{{ waveObj[waveName]['count'] }}</b>, 
-            时间间隔<b class="label label-success">{{ waveObj[waveName]['dt'] }}</b>,
-            原波峰值<b class="label label-success">{{ waveObj[waveName]['absMax'] }}</b>
-                    <button class="btn btn-danger " ng-click="waveObj[waveName]='';getWaveData( waveName )"> 重载地震波 </button>
-                </div>
-              </tab>
-              <tab heading="时程分析结果"  select="plotData('resA2')" 
-                active="plotType.res" 
-                disabled=" !waveName || !waveObj[waveName].res">
-                  <div>
+                    <button class="btn btn-danger " ng-show="waveObj[waveName]['res']"
+                    ng-click="waveObj[waveName]='';getWaveData( waveName )"> 重载地震波 </button>
+              </div>
+          <!-- 2 -->
+                <div ng-show="plotType.res">
                     时程分析：调整后的峰值<span class='label label-success'>{{waveObj[waveName]['newMax']}}</span>
                     阻尼比<span class='label label-success'>{{waveObj[waveName]['zita']}}</span>
                     固有周期<span class='label label-success'>{{waveObj[waveName]['Tn']}}</span>
@@ -80,12 +114,9 @@
                     <button class="btn btn-info  " ng-click="plotData('resA')"> 相对加速度</button>
                     <button class="btn btn-info  " ng-click="plotData('resA2')"> 绝对加速度 </button>
                     <button class="btn btn-danger" ng-click="delResult()">删除结果</button>
-                  </div>
-              </tab>
-              <tab heading="反应谱结果"   select="plotData('specA2')" 
-                active="plotType.spec" 
-                disabled="waveName==''||!waveObj[waveName].spec">
-                  <div>
+                </div>
+          <!-- 3 -->
+                <div ng-show="plotType.spec">
                   反应谱分析：调整后的峰值<span class='label label-success'>{{waveObj[waveName]['newMax']}}</span>
                   阻尼比<span class='label label-success'>{{waveObj[waveName]['zita']}}</span>
                   <button class="btn btn-info" ng-click="plotData('specU')">  伪位移:U </button>
@@ -93,29 +124,8 @@
                   <button class="btn btn-info" ng-click="plotData('specA')">  伪加速度:A </button>
                   <button class="btn btn-info" ng-click="plotData('specA2')">  绝对加速度:A2 </button>
                   <button class="btn btn-danger" ng-click="delResult()">删除结果</button>
-                  </div>
-              </tab>
-            </tabset>
-          <div class="row well">
-            
-            <span ng-show="waveName">
-            地震波 <b class="label label-success">{{waveName}} </b>,
-            点数<b class="label label-success">{{ waveObj[waveName]['count'] }}</b>, 
-            时间间隔<b class="label label-success">{{ waveObj[waveName]['dt'] }}</b>,
-            原波峰值<b class="label label-success">{{ waveObj[waveName]['absMax'] }}</b></span>
-            
-            <div class="box-chart text-center" ui-chart="chartData" chart-options="chartOptions"></div>
-          
-            <span ng-show="waveName">
-            当时显示：<b class="label label-success">{{plotDisc}} </b>&nbsp;
-            
-              <button type="button" class="btn btn-xs btn-primary" ng-click="dataToCsv()"
-                popover-title="把显示的数据下载为文件" popover="下载为Excel的.csv格式数据文件，方便利用Excel的强大数据处理功能。" popover-trigger="mouseenter">
-              <span class="glyphicon glyphicon-download-alt"></span>下载为.CSV文件</button>
-              <button type="button" class="btn btn-xs btn-primary"  ng-click="dataToScr()"
-              popover-title="把显示的数据下载为文件" popover="下载为AutoCAD的.SCR格式命令流文件，方便利用AutoCAD的强大图形编辑功能。" popover-trigger="mouseenter">
-              <span class="glyphicon glyphicon-download-alt"></span>下载为.SRC文件</button>
-            </span>
+                </div>
+          <!-- 3end -->
           </div>
           
         </div> <!-- END right -->
