@@ -202,7 +202,13 @@ body {
 /* app css */
 
 .box-chart {
-  width: 99%;
+  width: 100%;
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  border-top-color: transparent;
+  padding:10px;
+  
+  border-radius: 0 0 4px 4px;
 }
 
 .cursor-pointer {
@@ -238,4 +244,9 @@ body {
 
 .status-box {
   height:42px;
+}
+.gray-nav .nav-tabs>li.active>a, 
+.gray-nav .nav-tabs>li.active>a:hover, 
+.gray-nav .nav-tabs>li.active>a:focus {
+  background-color: #f8f8f8;
 }

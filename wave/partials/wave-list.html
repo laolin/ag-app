@@ -46,11 +46,9 @@
         <!-- right -->
         <div class="col-xs-9">
             
-          <div class="row">
+          <div class="xrow">
           
             <div class="pull-right" ng-show="waveName">
-            当时显示：<b class="label label-success">{{plotDisc}} </b>&nbsp;
-            
               <button type="button" class="btn btn-primary" ng-click="dataToCsv()"
               popover-placement="bottom"
               popover-title="下载数据文件" popover="下载为Excel的.csv格式数据文件，方便利用Excel的强大数据处理功能。" popover-trigger="mouseenter">
@@ -60,25 +58,25 @@
               popover-title="下载数据文件" popover="下载为AutoCAD的.SCR格式命令流文件，方便利用AutoCAD的强大图形编辑功能。" popover-trigger="mouseenter">
               <span class="glyphicon glyphicon-download-alt"></span>下载为.SRC文件</button>
             </div>
-            <div class="">
+            <div class="gray-nav">
               <tabset>
-                  <tab heading="波数据" select="plotData('wave')" 
+                  <tab heading="波数据" select="plotWaveData('wave')" 
                     active="plotType.wave"
                     disabled=" !waveName  ">
                   </tab>
-                  <tab heading="时程分析结果"  select="plotData('resA2')" 
+                  <tab heading="时程分析结果"  select="plotWaveData('resA2')" 
                     active="plotType.res" 
                     disabled=" !waveName || !waveObj[waveName].res">
                   </tab>
-                  <tab heading="反应谱结果"   select="plotData('specA2')" 
+                  <tab heading="反应谱结果"   select="plotWaveData('specA2')" 
                     active="plotType.spec" 
                     disabled="waveName==''||!waveObj[waveName].spec">
                   </tab>
                 </tabset>
             </div>
                         
-            <div class="box-chart text-center" ui-chart="chartData" chart-options="chartOptions"></div>
-          
+            <div class="box-chart">
+            <div class=" text-center" ui-chart="chartData" chart-options="chartOptions"></div>
           <!-- 1 -->
              <div ng-show="waveName && plotType.wave">
              
@@ -109,25 +107,25 @@
                     时程分析：调整后的峰值<span class='label label-success'>{{waveObj[waveName]['newMax']}}</span>
                     阻尼比<span class='label label-success'>{{waveObj[waveName]['zita']}}</span>
                     固有周期<span class='label label-success'>{{waveObj[waveName]['Tn']}}</span>
-                    <button class="btn btn-info  " ng-click="plotData('resU')"> 相对位移 </button>
-                    <button class="btn btn-info  " ng-click="plotData('resV')"> 相对速度</button>
-                    <button class="btn btn-info  " ng-click="plotData('resA')"> 相对加速度</button>
-                    <button class="btn btn-info  " ng-click="plotData('resA2')"> 绝对加速度 </button>
+                    <button class="btn btn-info  " ng-click="plotWaveData('resU')"> 相对位移 </button>
+                    <button class="btn btn-info  " ng-click="plotWaveData('resV')"> 相对速度</button>
+                    <button class="btn btn-info  " ng-click="plotWaveData('resA')"> 相对加速度</button>
+                    <button class="btn btn-info  " ng-click="plotWaveData('resA2')"> 绝对加速度 </button>
                     <button class="btn btn-danger" ng-click="delResult()">删除结果</button>
                 </div>
           <!-- 3 -->
                 <div ng-show="plotType.spec">
                   反应谱分析：调整后的峰值<span class='label label-success'>{{waveObj[waveName]['newMax']}}</span>
                   阻尼比<span class='label label-success'>{{waveObj[waveName]['zita']}}</span>
-                  <button class="btn btn-info" ng-click="plotData('specU')">  伪位移:U </button>
-                  <button class="btn btn-info" ng-click="plotData('specV')">  伪速度:V </button>
-                  <button class="btn btn-info" ng-click="plotData('specA')">  伪加速度:A </button>
-                  <button class="btn btn-info" ng-click="plotData('specA2')">  绝对加速度:A2 </button>
+                  <button class="btn btn-info" ng-click="plotWaveData('specU')">  伪位移:U </button>
+                  <button class="btn btn-info" ng-click="plotWaveData('specV')">  伪速度:V </button>
+                  <button class="btn btn-info" ng-click="plotWaveData('specA')">  伪加速度:A </button>
+                  <button class="btn btn-info" ng-click="plotWaveData('specA2')">  绝对加速度:A2 </button>
                   <button class="btn btn-danger" ng-click="delResult()">删除结果</button>
                 </div>
           <!-- 3end -->
           </div>
-          
+          </div>
         </div> <!-- END right -->
       </div>
       
