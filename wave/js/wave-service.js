@@ -111,13 +111,28 @@ LaolinApp.service('waveService', ["$http","$log","serviceCommon",
     return {
     res:(waveObj._$dataType.substr(0,3)=='res'),
     spec:(waveObj._$dataType.substr(0,4)=='spec'),
+    compare:(waveObj._$dataType=='compare'),
     wave:(waveObj._$dataType=='wave')
     };
   }
   //获取一条波对象中的数据数组：波数据、时程反应数据、反应谱数据等
-  //type=['wave', 'resU','resV','resA','resA2', 'specU','specV','specA','specA2'];
-  this.getDataByType=function(name) {
-    type=waveObj._$dataType;
+  //type=['compare',
+  //'wave',
+  //'resU','resV','resA','resA2', 'specU','specV','specA','specA2'];
+  this.getDataByType=function(name,type) {
+    type=type?(waveObj._$dataType=type):waveObj._$dataType;
+
+    if(type=='compare') {
+      dat=[];
+      disc=[];
+      
+      waveObj._$waveNameList.forEach(function(name) {
+        if(waveObj[name] && waveObj[name].spec) {
+          dat.push(waveObj[name].spec.a2);
+          disc.push(name);
+        }
+      });
+    } else {
     var wave=waveObj[name];
     if(!wave){
       $log.log("no data for getDataByType: "+name);
@@ -139,6 +154,7 @@ LaolinApp.service('waveService', ["$http","$log","serviceCommon",
         case "specA2":dat=wave.spec.a2;disc="绝对加速度反应谱A2";break;
         default:$log.log("Error type for getDataByType: "+type);return false;
       }
+    }
     }
     return {data:dat,disc:disc,type:type};
   }

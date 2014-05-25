@@ -72,6 +72,10 @@
                     active="plotType.spec" 
                     disabled="waveName==''||!waveObj[waveName].spec">
                   </tab>
+                  <tab heading="反应谱对比:{{getWaveTypeSearched(2)}}"   select="plotWaveData('compare')" 
+                    active="plotType.compare"
+                    disabled="waveName==''||!getWaveTypeSearched(2)">
+                  </tab>
                 </tabset>
             </div>
                         
@@ -124,6 +128,11 @@
                   <button class="btn btn-danger" ng-click="delResult()">删除结果</button>
                 </div>
           <!-- 3end -->
+          <!-- 4 -->
+                <div ng-show="plotType.compare">
+                
+                </div>
+          <!-- 4end -->
           </div>
           </div>
         </div> <!-- END right -->

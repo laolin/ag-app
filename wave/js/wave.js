@@ -19,10 +19,19 @@ LaolinApp.controller('waveListCtrl',
   }
   
   function _plotData(title,dataArr,tArr) {
-  
+    $scope.chartOptions.series=[];
+    if(Array.isArray(title)) {
+      title.forEach(function(t){
+        $scope.chartOptions.series.push({label:t});
+      });
+    
+      $scope.chartOptions.title='反应谱对比';
+    } else {
+      $scope.chartOptions.series=[{label:$scope.waveName}];
+      $scope.chartOptions.title=title;
+    }
     $scope.chartData=dataArr;
-    $scope.chartOptions.title=title;
-  
+    
   }
   //--------------
   $scope.plotWaveData=function(type) {
@@ -30,16 +39,19 @@ LaolinApp.controller('waveListCtrl',
       waveService.setDataType(type);
     }
     o=waveService.getDataByType($scope.waveName);
-    if(!o){
-      o={disc:'无数据',data:[0]};
-      serviceCommon.appNotify('请点击地震波加载数据',0);
-      
-    } else {
-      serviceCommon.appNotify('显示【'+$scope.waveName+'】的'+o.disc,-4000);
-    }
     $scope.plotType= waveService.getDataType();
-    $scope.plotDisc=o.disc;
-    _plotData(o.disc,[o.data]);
+    
+    if(!o){
+      serviceCommon.appNotify('请点击地震波加载数据',0);
+      return _plotData('无数据',[[0]]);
+    }
+    serviceCommon.appNotify('显示【'+$scope.waveName+'】的'+o.disc,-4000);
+    if(o.type=='compare') {
+      $log.log(o);
+      _plotData(o.disc,o.data);
+    } else {
+      _plotData(o.disc,[o.data]);
+    }
   }
   
   $scope.delResult=function() {
@@ -95,7 +107,7 @@ LaolinApp.controller('waveListCtrl',
     }else{    //未加载，需要去加载数据
       $log.log("No data for waveName="+name);
       waveService.fetchWaveData(name).then(function(data){
-        
+        waveService.setDataType('wave');
         loadWave(name);   
         $scope.waveObj[name]['newMax']=$scope.waveObj[name]['newMax']||$scope.waveObj[name]['absMax']
 
@@ -147,6 +159,7 @@ LaolinApp.controller('waveListCtrl',
   $scope.chartOptions = {     
     title:"welcome to Laolin Wave Tools", 
     axesDefaults:{pad:1.0},
+    legend:{show: true,location:'ne',placement :"inside"},
     seriesDefaults: {
         shadow:false,
         rendererOptions: { smooth: false },
@@ -154,7 +167,7 @@ LaolinApp.controller('waveListCtrl',
         markerOptions: { show:false }
     }      
   };
-  //$scope.plotWaveData();//由于在tab的select里会调用plotWaveData，所以不要重复调用了。
+  //$scope.plotWaveData();//由于在tab的select里会调用 plotWaveData ，所以不要重复调用了。
 
   
   
